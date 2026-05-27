@@ -1,0 +1,227 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp } from "lucide-react";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, PieChart, Pie, Legend } from "recharts";
+
+export const Route = createFileRoute("/dashboard")({
+  component: Dashboard,
+});
+
+type Registration = {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  profession: string | null;
+  experience_level: string;
+  motivation: string | null;
+  hackathon_choice: string;
+  status: string;
+  created_at: string;
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "oklch(0.75 0.17 55)",
+  accepted: "oklch(0.65 0.15 145)",
+  rejected: "oklch(0.6 0.22 25)",
+  waitlist: "oklch(0.7 0.12 200)",
+};
+
+function Dashboard() {
+  const [rows, setRows] = useState<Registration[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<string>("all");
+
+  async function load() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("registrations")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error && data) setRows(data as Registration[]);
+    setLoading(false);
+  }
+
+  useEffect(() => { load(); }, []);
+
+  async function updateStatus(id: string, status: string) {
+    const { error } = await supabase.from("registrations").update({ status }).eq("id", id);
+    if (!error) setRows((r) => r.map((x) => (x.id === id ? { ...x, status } : x)));
+  }
+
+  const stats = useMemo(() => {
+    const total = rows.length;
+    const accepted = rows.filter((r) => r.status === "accepted").length;
+    const pending = rows.filter((r) => r.status === "pending").length;
+    const spots = Math.max(0, 30 - accepted);
+    return { total, accepted, pending, spots };
+  }, [rows]);
+
+  const byHackathon = useMemo(() => ([
+    { name: "Hack #1", value: rows.filter((r) => r.hackathon_choice === "hackathon1").length },
+    { name: "Hack #2", value: rows.filter((r) => r.hackathon_choice === "hackathon2").length },
+    { name: "Les deux", value: rows.filter((r) => r.hackathon_choice === "both").length },
+  ]), [rows]);
+
+  const byLevel = useMemo(() => ([
+    { name: "Débutant", value: rows.filter((r) => r.experience_level === "beginner").length },
+    { name: "Intermédiaire", value: rows.filter((r) => r.experience_level === "intermediate").length },
+    { name: "Avancé", value: rows.filter((r) => r.experience_level === "advanced").length },
+  ]), [rows]);
+
+  const filtered = filter === "all" ? rows : rows.filter((r) => r.status === filter);
+
+  return (
+    <main className="mx-auto max-w-6xl px-6 py-12">
+      <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" /> Retour
+      </Link>
+      <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="font-mono text-xs uppercase tracking-widest text-primary">// Suivi des candidatures</div>
+          <h1 className="mt-2 text-3xl font-bold">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">Gestion des inscriptions au bootcamp BTC Hackathon</p>
+        </div>
+        <Link to="/register" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+          + Nouvelle inscription
+        </Link>
+      </div>
+
+      {/* KPIs */}
+      <div className="mt-8 grid gap-4 md:grid-cols-4">
+        <Kpi icon={Users} label="Candidatures" value={stats.total} accent="oklch(0.75 0.17 55)" />
+        <Kpi icon={CheckCircle2} label="Acceptées" value={stats.accepted} accent="oklch(0.65 0.15 145)" />
+        <Kpi icon={Clock} label="En attente" value={stats.pending} accent="oklch(0.7 0.12 200)" />
+        <Kpi icon={TrendingUp} label="Places restantes" value={stats.spots} accent="oklch(0.75 0.17 55)" />
+      </div>
+
+      {/* Charts */}
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <Card title="Choix de hackathon">
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={byHackathon}>
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={12} allowDecimals={false} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="oklch(0.75 0.17 55)" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+        <Card title="Niveau d'expérience">
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={byLevel} dataKey="value" nameKey="name" innerRadius={50} outerRadius={85} paddingAngle={3}>
+                  {byLevel.map((_, i) => (
+                    <Cell key={i} fill={["oklch(0.75 0.17 55)", "oklch(0.7 0.12 200)", "oklch(0.65 0.15 145)"][i]} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+      </div>
+
+      {/* Filters + table */}
+      <Card title="Toutes les candidatures" className="mt-6">
+        <div className="mb-4 flex flex-wrap gap-2">
+          {["all", "pending", "accepted", "waitlist", "rejected"].map((s) => (
+            <button
+              key={s}
+              onClick={() => setFilter(s)}
+              className={`rounded-md border px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition ${
+                filter === s ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {s === "all" ? "Tout" : s} {s !== "all" && `(${rows.filter((r) => r.status === s).length})`}
+            </button>
+          ))}
+        </div>
+
+        {loading ? (
+          <div className="py-12 text-center text-sm text-muted-foreground">Chargement...</div>
+        ) : filtered.length === 0 ? (
+          <div className="py-12 text-center text-sm text-muted-foreground">
+            Aucune candidature {filter !== "all" && `(${filter})`}.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-left font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  <th className="py-3 pr-4">Candidat</th>
+                  <th className="py-3 pr-4">Niveau</th>
+                  <th className="py-3 pr-4">Hackathon</th>
+                  <th className="py-3 pr-4">Date</th>
+                  <th className="py-3 pr-4">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((r) => (
+                  <tr key={r.id} className="border-b border-border/50 hover:bg-secondary/30">
+                    <td className="py-3 pr-4">
+                      <div className="font-medium">{r.full_name}</div>
+                      <div className="text-xs text-muted-foreground">{r.email}</div>
+                      {r.profession && <div className="text-xs text-muted-foreground">{r.profession}</div>}
+                    </td>
+                    <td className="py-3 pr-4 text-xs">{levelLabel(r.experience_level)}</td>
+                    <td className="py-3 pr-4 text-xs">{hackLabel(r.hackathon_choice)}</td>
+                    <td className="py-3 pr-4 font-mono text-xs text-muted-foreground">
+                      {new Date(r.created_at).toLocaleDateString("fr-FR")}
+                    </td>
+                    <td className="py-3 pr-4">
+                      <select
+                        value={r.status}
+                        onChange={(e) => updateStatus(r.id, e.target.value)}
+                        className="rounded-md border border-border bg-background px-2 py-1 text-xs"
+                        style={{ color: STATUS_COLORS[r.status] }}
+                      >
+                        <option value="pending">En attente</option>
+                        <option value="accepted">Accepté</option>
+                        <option value="waitlist">Liste d'attente</option>
+                        <option value="rejected">Refusé</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+    </main>
+  );
+}
+
+function Kpi({ icon: Icon, label, value, accent }: { icon: any; label: string; value: number; accent: string }) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-5">
+      <div className="flex items-center justify-between">
+        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">{label}</span>
+        <Icon className="h-4 w-4" style={{ color: accent }} />
+      </div>
+      <div className="mt-3 text-3xl font-bold" style={{ color: accent }}>{value}</div>
+    </div>
+  );
+}
+
+function Card({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`rounded-xl border border-border bg-card p-6 ${className}`}>
+      <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">{title}</h3>
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+function levelLabel(l: string) {
+  return { beginner: "Débutant", intermediate: "Intermédiaire", advanced: "Avancé" }[l] ?? l;
+}
+function hackLabel(h: string) {
+  return { hackathon1: "Hack #1", hackathon2: "Hack #2", both: "Les deux" }[h] ?? h;
+}
