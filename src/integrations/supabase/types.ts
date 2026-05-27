@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      registrations: {
+        Row: {
+          created_at: string
+          email: string
+          experience_level: string
+          full_name: string
+          hackathon_choice: string
+          id: string
+          motivation: string | null
+          phone: string | null
+          profession: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          experience_level?: string
+          full_name: string
+          hackathon_choice?: string
+          id?: string
+          motivation?: string | null
+          phone?: string | null
+          profession?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          experience_level?: string
+          full_name?: string
+          hackathon_choice?: string
+          id?: string
+          motivation?: string | null
+          phone?: string | null
+          profession?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
