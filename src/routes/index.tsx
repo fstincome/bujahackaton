@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { getPublicRegistrationCount } from "@/lib/admin.functions";
 import heroBg from "@/assets/hero-bg.jpg";
 import { Zap, Calendar, Users, Trophy, Code2, Network, Shield, Sparkles } from "lucide-react";
 
@@ -12,8 +12,7 @@ function Landing() {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
-    supabase.from("registrations").select("*", { count: "exact", head: true })
-      .then(({ count }) => setCount(count ?? 0));
+    getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
   }, []);
 
   return (

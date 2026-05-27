@@ -1,10 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp } from "lucide-react";
+import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp, LogOut } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, PieChart, Pie, Legend } from "recharts";
 
 export const Route = createFileRoute("/dashboard")({
+  beforeLoad: async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) throw redirect({ to: "/login" });
+  },
   component: Dashboard,
 });
 
@@ -29,8 +33,15 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [rows, setRows] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
+
+  async function logout() {
+    await supabase.auth.signOut();
+    navigate({ to: "/login" });
+  }
+
   const [filter, setFilter] = useState<string>("all");
 
   async function load() {
@@ -83,9 +94,14 @@ function Dashboard() {
           <h1 className="mt-2 text-3xl font-bold">Dashboard</h1>
           <p className="text-sm text-muted-foreground">Gestion des inscriptions au bootcamp BTC Hackathon</p>
         </div>
-        <Link to="/register" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
-          + Nouvelle inscription
-        </Link>
+        <div className="flex gap-2">
+          <Link to="/register" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+            + Nouvelle inscription
+          </Link>
+          <button onClick={logout} className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary">
+            <LogOut className="h-4 w-4" /> Déconnexion
+          </button>
+        </div>
       </div>
 
       {/* KPIs */}
