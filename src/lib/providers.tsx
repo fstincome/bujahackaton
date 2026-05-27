@@ -1,0 +1,291 @@
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+
+/* ---------------- Theme ---------------- */
+type Theme = "light" | "dark";
+type ThemeCtx = { theme: Theme; toggle: () => void };
+const ThemeContext = createContext<ThemeCtx>({ theme: "dark", toggle: () => {} });
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>("dark");
+
+  useEffect(() => {
+    const saved = (typeof window !== "undefined" && localStorage.getItem("theme")) as Theme | null;
+    const initial: Theme = saved ?? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    setTheme(initial);
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+    try { localStorage.setItem("theme", theme); } catch {}
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggle: () => setTheme((t) => (t === "dark" ? "light" : "dark")) }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+export const useTheme = () => useContext(ThemeContext);
+
+/* ---------------- i18n ---------------- */
+type Lang = "fr" | "en";
+type I18nCtx = { lang: Lang; setLang: (l: Lang) => void; t: (k: string) => string };
+const I18nContext = createContext<I18nCtx>({ lang: "fr", setLang: () => {}, t: (k) => k });
+
+const dict: Record<Lang, Record<string, string>> = {
+  fr: {
+    "nav.program": "Programme",
+    "nav.schedule": "Calendrier",
+    "nav.trainers": "Formateurs",
+    "nav.dashboard": "Dashboard",
+    "nav.register": "⚡ S'inscrire",
+    "footer.contact": "Contact",
+    "footer.partners": "Partenaires",
+    "footer.partners.body": "Vexl — P2P Bitcoin trading\nFree Tech Institute",
+    "footer.copy": "© 2026 Free Tech Institute. Peer-to-Peer Bitcoin Educational Program.",
+    "hero.badge": "Bujumbura, Burundi · 5–6 juin 2026",
+    "hero.title1": "Bitcoin",
+    "hero.title2": "Hackathons",
+    "hero.subtitle": "Deux jours de hacking, trois ateliers pratiques, 30 développeurs. Construisons des échanges Bitcoin pair-à-pair, sans intermédiaires, propulsés par Vexl & le Lightning Network.",
+    "hero.apply": "Postuler maintenant",
+    "hero.discover": "Découvrir le programme",
+    "stat.participants": "Participants",
+    "stat.hackathons": "Hackathons",
+    "stat.workshops": "Workshops",
+    "stat.prize": "Prix USDT",
+    "program.kicker": "// Programme",
+    "program.title": "De la théorie à la pratique",
+    "program.subtitle": "Trois ateliers préparatoires, suivis de deux hackathons d'une journée complète.",
+    "prog.1.t": "Bitcoin fundamentals",
+    "prog.1.d": "Échanges P2P permissionless, sans intermédiaires, ni KYC.",
+    "prog.2.t": "Vexl & sécurité",
+    "prog.2.d": "Introduction à Vexl et sécurité dans les systèmes décentralisés.",
+    "prog.3.t": "Node & Lightning",
+    "prog.3.d": "Lancement d'un node Bitcoin Core et SDKs Lightning en live.",
+    "prog.4.t": "Hackathon & pitchs",
+    "prog.4.d": "Team formation, mentorship, démos finales devant un jury.",
+    "sched.kicker": "// Calendrier",
+    "sched.title": "Deux jours, deux hackathons",
+    "sched.month": "JUIN 2026",
+    "sched.h1.t": "Hackathon #1",
+    "sched.h1.s": "Building P2P Bitcoin tools — Vexl style",
+    "sched.h2.t": "Hackathon #2",
+    "sched.h2.s": "Lightning Network apps & pitch session",
+    "sched.prize1": "🏆 100 USDT — Best Pitch",
+    "sched.prize2": "⚡ 50 USDT — Best P2P solution",
+    "trainers.kicker": "// Formateurs",
+    "trainers.title": "L'équipe",
+    "trainers.lead": "Lead Trainer · Free Tech Institute",
+    "trainers.role": "Trainer · Free Tech Institute",
+    "trainers.guest": "Guest speaker remote :",
+    "trainers.guest.body": "intervention en ligne d'un représentant Vexl",
+    "out.kicker": "// Objectifs",
+    "out.title": "Résultats attendus",
+    "out.1": "2 prototypes Bitcoin P2P fonctionnels",
+    "out.2": "30 participants formés & certifiés",
+    "out.3": "70% interagissent avec un node Bitcoin Core",
+    "out.4": "10+ transactions P2P pendant l'évènement",
+    "out.5": "2 projets sélectionnés pour mentorat post-hackathon",
+    "cta.title": "Rejoignez la cohorte",
+    "cta.spots": "30 places disponibles.",
+    "cta.received": "candidature(s) reçue(s).",
+    "cta.apply": "Déposer ma candidature",
+    "cta.dashboard": "Voir le dashboard",
+    "back": "Retour",
+    "reg.kicker": "// Candidature",
+    "reg.title": "Inscription au Bootcamp",
+    "reg.subtitle": "30 places. Workshops + 2 hackathons à Bujumbura, 5-6 juin 2026.",
+    "reg.full_name": "Nom complet *",
+    "reg.email": "Email *",
+    "reg.phone": "Téléphone",
+    "reg.profession": "Profession / Étudiant en",
+    "reg.level": "Niveau en Bitcoin/Dev *",
+    "reg.hack": "Hackathon visé *",
+    "reg.motivation": "Motivation",
+    "reg.motivation.ph": "Pourquoi voulez-vous participer ? Quel projet aimeriez-vous construire ?",
+    "reg.submit": "Envoyer ma candidature",
+    "reg.submitting": "Envoi...",
+    "reg.success": "Candidature envoyée ! Nous reviendrons vers vous bientôt.",
+    "level.beginner": "Débutant",
+    "level.intermediate": "Intermédiaire",
+    "level.advanced": "Avancé",
+    "hack.both": "Les deux (5 & 6 juin)",
+    "hack.1": "Hackathon #1 — 5 juin",
+    "hack.2": "Hackathon #2 — 6 juin",
+    "hack.both.short": "Les deux",
+    "dash.kicker": "// Suivi des candidatures",
+    "dash.title": "Dashboard",
+    "dash.subtitle": "Gestion des inscriptions au bootcamp BTC Hackathon",
+    "dash.new": "+ Nouvelle inscription",
+    "dash.logout": "Déconnexion",
+    "kpi.total": "Candidatures",
+    "kpi.accepted": "Acceptées",
+    "kpi.pending": "En attente",
+    "kpi.spots": "Places restantes",
+    "chart.hack": "Choix de hackathon",
+    "chart.level": "Niveau d'expérience",
+    "table.title": "Toutes les candidatures",
+    "filter.all": "Tout",
+    "filter.pending": "En attente",
+    "filter.accepted": "Acceptées",
+    "filter.waitlist": "Liste d'attente",
+    "filter.rejected": "Refusées",
+    "loading": "Chargement...",
+    "table.empty": "Aucune candidature",
+    "th.candidate": "Candidat",
+    "th.level": "Niveau",
+    "th.hackathon": "Hackathon",
+    "th.date": "Date",
+    "th.status": "Statut",
+    "status.pending": "En attente",
+    "status.accepted": "Accepté",
+    "status.waitlist": "Liste d'attente",
+    "status.rejected": "Refusé",
+    "login.kicker": "// Admin",
+    "login.title": "Connexion",
+    "login.subtitle": "Accès réservé aux organisateurs du bootcamp.",
+    "login.email": "Email",
+    "login.password": "Mot de passe",
+    "login.submit": "Se connecter",
+    "login.submitting": "Connexion...",
+    "login.success": "Connecté !",
+  },
+  en: {
+    "nav.program": "Program",
+    "nav.schedule": "Schedule",
+    "nav.trainers": "Trainers",
+    "nav.dashboard": "Dashboard",
+    "nav.register": "⚡ Apply",
+    "footer.contact": "Contact",
+    "footer.partners": "Partners",
+    "footer.partners.body": "Vexl — P2P Bitcoin trading\nFree Tech Institute",
+    "footer.copy": "© 2026 Free Tech Institute. Peer-to-Peer Bitcoin Educational Program.",
+    "hero.badge": "Bujumbura, Burundi · June 5–6, 2026",
+    "hero.title1": "Bitcoin",
+    "hero.title2": "Hackathons",
+    "hero.subtitle": "Two days of hacking, three hands-on workshops, 30 developers. Let's build peer-to-peer Bitcoin exchanges — no intermediaries — powered by Vexl & the Lightning Network.",
+    "hero.apply": "Apply now",
+    "hero.discover": "Explore the program",
+    "stat.participants": "Participants",
+    "stat.hackathons": "Hackathons",
+    "stat.workshops": "Workshops",
+    "stat.prize": "USDT prizes",
+    "program.kicker": "// Program",
+    "program.title": "From theory to practice",
+    "program.subtitle": "Three preparatory workshops, followed by two full-day hackathons.",
+    "prog.1.t": "Bitcoin fundamentals",
+    "prog.1.d": "Permissionless P2P exchanges — no intermediaries, no KYC.",
+    "prog.2.t": "Vexl & security",
+    "prog.2.d": "Intro to Vexl and security in decentralized systems.",
+    "prog.3.t": "Node & Lightning",
+    "prog.3.d": "Spin up a Bitcoin Core node and Lightning SDKs live.",
+    "prog.4.t": "Hackathon & pitches",
+    "prog.4.d": "Team formation, mentorship, final demos in front of a jury.",
+    "sched.kicker": "// Schedule",
+    "sched.title": "Two days, two hackathons",
+    "sched.month": "JUNE 2026",
+    "sched.h1.t": "Hackathon #1",
+    "sched.h1.s": "Building P2P Bitcoin tools — Vexl style",
+    "sched.h2.t": "Hackathon #2",
+    "sched.h2.s": "Lightning Network apps & pitch session",
+    "sched.prize1": "🏆 100 USDT — Best Pitch",
+    "sched.prize2": "⚡ 50 USDT — Best P2P solution",
+    "trainers.kicker": "// Trainers",
+    "trainers.title": "The team",
+    "trainers.lead": "Lead Trainer · Free Tech Institute",
+    "trainers.role": "Trainer · Free Tech Institute",
+    "trainers.guest": "Remote guest speaker:",
+    "trainers.guest.body": "an online intervention from a Vexl representative",
+    "out.kicker": "// Outcomes",
+    "out.title": "Expected outcomes",
+    "out.1": "2 working P2P Bitcoin prototypes",
+    "out.2": "30 trained & certified participants",
+    "out.3": "70% interact with a Bitcoin Core node",
+    "out.4": "10+ P2P transactions during the event",
+    "out.5": "2 projects selected for post-hackathon mentorship",
+    "cta.title": "Join the cohort",
+    "cta.spots": "30 spots available.",
+    "cta.received": "application(s) received.",
+    "cta.apply": "Submit my application",
+    "cta.dashboard": "View dashboard",
+    "back": "Back",
+    "reg.kicker": "// Application",
+    "reg.title": "Bootcamp registration",
+    "reg.subtitle": "30 spots. Workshops + 2 hackathons in Bujumbura, June 5–6, 2026.",
+    "reg.full_name": "Full name *",
+    "reg.email": "Email *",
+    "reg.phone": "Phone",
+    "reg.profession": "Profession / Student in",
+    "reg.level": "Bitcoin/Dev level *",
+    "reg.hack": "Target hackathon *",
+    "reg.motivation": "Motivation",
+    "reg.motivation.ph": "Why do you want to join? What would you like to build?",
+    "reg.submit": "Send my application",
+    "reg.submitting": "Sending...",
+    "reg.success": "Application sent! We'll get back to you soon.",
+    "level.beginner": "Beginner",
+    "level.intermediate": "Intermediate",
+    "level.advanced": "Advanced",
+    "hack.both": "Both (June 5 & 6)",
+    "hack.1": "Hackathon #1 — June 5",
+    "hack.2": "Hackathon #2 — June 6",
+    "hack.both.short": "Both",
+    "dash.kicker": "// Application tracking",
+    "dash.title": "Dashboard",
+    "dash.subtitle": "Managing BTC Hackathon bootcamp registrations",
+    "dash.new": "+ New registration",
+    "dash.logout": "Sign out",
+    "kpi.total": "Applications",
+    "kpi.accepted": "Accepted",
+    "kpi.pending": "Pending",
+    "kpi.spots": "Spots left",
+    "chart.hack": "Hackathon choice",
+    "chart.level": "Experience level",
+    "table.title": "All applications",
+    "filter.all": "All",
+    "filter.pending": "Pending",
+    "filter.accepted": "Accepted",
+    "filter.waitlist": "Waitlist",
+    "filter.rejected": "Rejected",
+    "loading": "Loading...",
+    "table.empty": "No applications",
+    "th.candidate": "Candidate",
+    "th.level": "Level",
+    "th.hackathon": "Hackathon",
+    "th.date": "Date",
+    "th.status": "Status",
+    "status.pending": "Pending",
+    "status.accepted": "Accepted",
+    "status.waitlist": "Waitlist",
+    "status.rejected": "Rejected",
+    "login.kicker": "// Admin",
+    "login.title": "Sign in",
+    "login.subtitle": "Reserved for bootcamp organizers.",
+    "login.email": "Email",
+    "login.password": "Password",
+    "login.submit": "Sign in",
+    "login.submitting": "Signing in...",
+    "login.success": "Signed in!",
+  },
+};
+
+export function I18nProvider({ children }: { children: ReactNode }) {
+  const [lang, setLangState] = useState<Lang>("fr");
+
+  useEffect(() => {
+    const saved = (typeof window !== "undefined" && localStorage.getItem("lang")) as Lang | null;
+    if (saved === "fr" || saved === "en") setLangState(saved);
+    else if (typeof navigator !== "undefined" && navigator.language.startsWith("en")) setLangState("en");
+  }, []);
+
+  useEffect(() => {
+    try { localStorage.setItem("lang", lang); } catch {}
+    if (typeof document !== "undefined") document.documentElement.lang = lang;
+  }, [lang]);
+
+  const t = (k: string) => dict[lang][k] ?? dict.fr[k] ?? k;
+  return <I18nContext.Provider value={{ lang, setLang: setLangState, t }}>{children}</I18nContext.Provider>;
+}
+export const useI18n = () => useContext(I18nContext);
