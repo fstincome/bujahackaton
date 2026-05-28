@@ -5,6 +5,7 @@ import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp, LogOut } from "lucid
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, PieChart, Pie, Legend } from "recharts";
 import { useI18n } from "@/lib/providers";
 import { SpeakersAdmin } from "@/components/SpeakersAdmin";
+import { ScheduleAdmin } from "@/components/ScheduleAdmin";
 import { ContactMessagesAdmin } from "@/components/ContactMessagesAdmin";
 
 export const Route = createFileRoute("/dashboard")({
@@ -221,6 +222,10 @@ function Dashboard() {
           </div>
         )}
       </Card>
+
+      <div className="mt-6">
+        <ScheduleAdmin />
+      </div>
 
       <div className="mt-6">
         <SpeakersAdmin />
