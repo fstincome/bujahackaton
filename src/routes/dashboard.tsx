@@ -224,6 +224,10 @@ function Dashboard() {
       </Card>
 
       <div className="mt-6">
+        <ScheduleAdmin />
+      </div>
+
+      <div className="mt-6">
         <SpeakersAdmin />
       </div>
 
