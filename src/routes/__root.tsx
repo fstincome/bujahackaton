@@ -102,6 +102,7 @@ function RootComponent() {
           <Outlet />
           <SiteFooter />
           <ThemedToaster />
+          <InstallPwaPrompt />
         </QueryClientProvider>
       </I18nProvider>
     </ThemeProvider>
