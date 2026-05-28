@@ -7,7 +7,9 @@ export type Speaker = {
   id: string;
   name: string;
   role: string | null;
+  role_en: string | null;
   bio: string | null;
+  bio_en: string | null;
   twitter_url: string | null;
   avatar_url: string | null;
   sort_order: number;
@@ -75,7 +77,9 @@ function SpeakerCard({ speaker, onChange, onDelete }: { speaker: Speaker; onChan
   const dirty =
     draft.name !== speaker.name ||
     draft.role !== speaker.role ||
+    draft.role_en !== speaker.role_en ||
     draft.bio !== speaker.bio ||
+    draft.bio_en !== speaker.bio_en ||
     draft.twitter_url !== speaker.twitter_url ||
     draft.sort_order !== speaker.sort_order;
 
@@ -86,7 +90,9 @@ function SpeakerCard({ speaker, onChange, onDelete }: { speaker: Speaker; onChan
       .update({
         name: draft.name,
         role: draft.role,
+        role_en: draft.role_en,
         bio: draft.bio,
+        bio_en: draft.bio_en,
         twitter_url: draft.twitter_url,
         sort_order: draft.sort_order,
         updated_at: new Date().toISOString(),
@@ -157,13 +163,23 @@ function SpeakerCard({ speaker, onChange, onDelete }: { speaker: Speaker; onChan
 
       <div className="mt-3 space-y-2">
         <Field label={t("speakers.name")} value={draft.name} onChange={(v) => setDraft({ ...draft, name: v })} />
-        <Field label={t("speakers.role")} value={draft.role ?? ""} onChange={(v) => setDraft({ ...draft, role: v })} />
+        <Field label={`${t("speakers.role")} (FR)`} value={draft.role ?? ""} onChange={(v) => setDraft({ ...draft, role: v })} />
+        <Field label={`${t("speakers.role")} (EN)`} value={draft.role_en ?? ""} onChange={(v) => setDraft({ ...draft, role_en: v })} />
         <Field label={t("speakers.twitter")} value={draft.twitter_url ?? ""} onChange={(v) => setDraft({ ...draft, twitter_url: v })} placeholder="https://x.com/..." />
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("speakers.bio")}</label>
+          <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("speakers.bio")} (FR)</label>
           <textarea
             value={draft.bio ?? ""}
             onChange={(e) => setDraft({ ...draft, bio: e.target.value })}
+            rows={3}
+            className="mt-1 w-full rounded-md border border-border bg-card px-2 py-1.5 text-xs"
+          />
+        </div>
+        <div>
+          <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("speakers.bio")} (EN)</label>
+          <textarea
+            value={draft.bio_en ?? ""}
+            onChange={(e) => setDraft({ ...draft, bio_en: e.target.value })}
             rows={3}
             className="mt-1 w-full rounded-md border border-border bg-card px-2 py-1.5 text-xs"
           />

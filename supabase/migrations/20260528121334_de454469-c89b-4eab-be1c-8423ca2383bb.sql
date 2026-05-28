@@ -1,0 +1,2 @@
+ALTER TABLE public.speakers ADD COLUMN IF NOT EXISTS bio_en TEXT;
+ALTER TABLE public.speakers ADD COLUMN IF NOT EXISTS role_en TEXT;

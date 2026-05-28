@@ -12,13 +12,13 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [count, setCount] = useState<number | null>(null);
-  const [speakers, setSpeakers] = useState<Array<{ id: string; name: string; role: string | null; bio: string | null; twitter_url: string | null; avatar_url: string | null }>>([]);
+  const [speakers, setSpeakers] = useState<Array<{ id: string; name: string; role: string | null; role_en: string | null; bio: string | null; bio_en: string | null; twitter_url: string | null; avatar_url: string | null }>>([]);
 
   useEffect(() => {
     getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
-    supabase.from("speakers").select("id,name,role,bio,twitter_url,avatar_url").order("sort_order").then(({ data }) => {
+    supabase.from("speakers").select("id,name,role,role_en,bio,bio_en,twitter_url,avatar_url").order("sort_order").then(({ data }) => {
       if (data) setSpeakers(data as any);
     });
   }, []);
@@ -154,8 +154,8 @@ function Landing() {
                 </div>
               )}
               <h3 className="mt-4 font-semibold">{p.name}</h3>
-              {p.role && <p className="text-xs text-muted-foreground">{p.role}</p>}
-              {p.bio && <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{p.bio}</p>}
+              {(lang === "en" ? p.role_en || p.role : p.role) && <p className="text-xs text-muted-foreground">{lang === "en" ? p.role_en || p.role : p.role}</p>}
+              {(lang === "en" ? p.bio_en || p.bio : p.bio) && <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{lang === "en" ? p.bio_en || p.bio : p.bio}</p>}
               {p.twitter_url && (
                 <a href={p.twitter_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-primary hover:underline">
                   @x →
