@@ -132,16 +132,22 @@ function Landing() {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
-            { n: "Advaxe Ndayisenga", r: t("trainers.lead"), x: "https://x.com/AdvaxeIr" },
-            { n: "Belyi Nobel Kubwayo", r: t("trainers.role"), x: "https://x.com/belyi_nobel" },
-            { n: "Wilfried Cubahiro", r: t("trainers.role") },
+            { n: "Advaxe Ndayisenga", r: t("trainers.lead"), x: "https://x.com/AdvaxeIr", img: "/speakers/advaxe.png", bio: t("trainers.bio.advaxe") },
+            { n: "Belyi Nobel Kubwayo", r: t("trainers.role"), x: "https://x.com/belyi_nobel", img: "/speakers/belyi.png", bio: t("trainers.bio.belyi") },
+            { n: "Wilfried Cubahiro", r: t("trainers.role"), img: "/speakers/wilfried.png", bio: t("trainers.bio.wilfried") },
           ].map((p) => (
             <div key={p.n} className="rounded-xl border border-border bg-card p-6 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary">
-                {p.n.split(" ").map((w) => w[0]).slice(0, 2).join("")}
-              </div>
+              <img
+                src={p.img}
+                alt={p.n}
+                loading="lazy"
+                width={96}
+                height={96}
+                className="mx-auto h-24 w-24 rounded-full object-cover border-2 border-primary/20"
+              />
               <h3 className="mt-4 font-semibold">{p.n}</h3>
               <p className="text-xs text-muted-foreground">{p.r}</p>
+              <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{p.bio}</p>
               {p.x && (
                 <a href={p.x} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-primary hover:underline">
                   @x →
