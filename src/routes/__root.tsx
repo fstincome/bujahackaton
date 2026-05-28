@@ -49,10 +49,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "BTC Hackathon Bujumbura — Free Tech Institute × Vexl" },
+      { title: "HACKATON BUJUMBURA — Free Tech Institute × Vexl" },
       { name: "description", content: "Two Bitcoin P2P hackathons in Bujumbura. Workshops, Lightning Network, Vexl. June 5-6, 2026." },
-      { property: "og:title", content: "BTC Hackathon Bujumbura — Free Tech Institute × Vexl" },
-      { name: "twitter:title", content: "BTC Hackathon Bujumbura — Free Tech Institute × Vexl" },
+      { property: "og:title", content: "HACKATON BUJUMBURA — Free Tech Institute × Vexl" },
+      { name: "twitter:title", content: "HACKATON BUJUMBURA — Free Tech Institute × Vexl" },
       { property: "og:description", content: "Two Bitcoin P2P hackathons in Bujumbura. Workshops, Lightning Network, Vexl. June 5-6, 2026." },
       { name: "twitter:description", content: "Two Bitcoin P2P hackathons in Bujumbura. Workshops, Lightning Network, Vexl. June 5-6, 2026." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b5e6f47-5054-4ead-95b2-5af49e2570b7/id-preview-f0bf5088--a44de30e-96d8-4198-85b8-846cdb9d4bb4.lovable.app-1779887600948.png" },
