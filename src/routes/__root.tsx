@@ -143,6 +143,7 @@ function SiteNav() {
           <Link to="/" hash="program" className="text-muted-foreground hover:text-foreground">{t("nav.program")}</Link>
           <Link to="/" hash="schedule" className="text-muted-foreground hover:text-foreground">{t("nav.schedule")}</Link>
           <Link to="/" hash="trainers" className="text-muted-foreground hover:text-foreground">{t("nav.trainers")}</Link>
+          <Link to="/" hash="contact" className="text-muted-foreground hover:text-foreground">{t("nav.contacts")}</Link>
           <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">{t("nav.dashboard")}</Link>
         </div>
         <div className="flex items-center gap-2">
