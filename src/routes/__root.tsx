@@ -100,7 +100,6 @@ function RootComponent() {
         <QueryClientProvider client={queryClient}>
           <SiteNav />
           <Outlet />
-          <SiteFooter />
           <ThemedToaster />
           <InstallPwaPrompt />
         </QueryClientProvider>
