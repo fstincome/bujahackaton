@@ -3,12 +3,17 @@ import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Zap, ArrowLeft } from "lucide-react";
+import { Zap, ArrowLeft, Check } from "lucide-react";
 import { useI18n } from "@/lib/providers";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
 });
+
+const LANGUAGES = [
+  "JavaScript", "TypeScript", "Python", "Rust", "Go", "Java", "C", "C++",
+  "C#", "PHP", "Ruby", "Kotlin", "Swift", "Dart", "Solidity", "HTML/CSS",
+];
 
 const schema = z.object({
   full_name: z.string().trim().min(2).max(120),
@@ -17,6 +22,8 @@ const schema = z.object({
   profession: z.string().trim().max(120).optional().or(z.literal("")),
   experience_level: z.enum(["beginner", "intermediate", "advanced"]),
   hackathon_choice: z.enum(["hackathon1", "hackathon2", "both"]),
+  dev_role: z.enum(["backend", "frontend", "fullstack"]),
+  languages: z.array(z.string().min(1).max(40)).max(20),
   motivation: z.string().trim().max(1000).optional().or(z.literal("")),
 });
 
@@ -25,12 +32,17 @@ function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [languages, setLanguages] = useState<string[]>([]);
+
+  function toggleLang(l: string) {
+    setLanguages((prev) => (prev.includes(l) ? prev.filter((x) => x !== l) : [...prev, l]));
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrors({});
     const fd = new FormData(e.currentTarget);
-    const raw = Object.fromEntries(fd.entries());
+    const raw = { ...Object.fromEntries(fd.entries()), languages };
     const parsed = schema.safeParse(raw);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
@@ -89,6 +101,44 @@ function RegisterPage() {
               </select>
             </Field>
           </div>
+
+          <Field label={t("reg.role")} error={errors.dev_role}>
+            <div className="grid grid-cols-3 gap-2">
+              {(["backend", "frontend", "fullstack"] as const).map((r) => (
+                <label key={r} className="relative">
+                  <input type="radio" name="dev_role" value={r} required className="peer sr-only" />
+                  <span className="block cursor-pointer rounded-md border border-input bg-background px-3 py-2.5 text-center text-sm transition hover:border-primary peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:font-semibold">
+                    {t(`role.${r}`)}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </Field>
+
+          <Field label={t("reg.langs")} error={errors.languages}>
+            <p className="mb-2 text-xs text-muted-foreground">{t("reg.langs.help")}</p>
+            <div className="flex flex-wrap gap-2">
+              {LANGUAGES.map((l) => {
+                const active = languages.includes(l);
+                return (
+                  <button
+                    key={l}
+                    type="button"
+                    onClick={() => toggleLang(l)}
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      active
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-input bg-background text-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    {active && <Check className="h-3 w-3" />}
+                    {l}
+                  </button>
+                );
+              })}
+            </div>
+          </Field>
+
           <Field label={t("reg.motivation")} error={errors.motivation}>
             <textarea name="motivation" rows={4} maxLength={1000} className={field} placeholder={t("reg.motivation.ph")} />
           </Field>
