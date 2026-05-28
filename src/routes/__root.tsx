@@ -140,31 +140,3 @@ function SiteNav() {
     </header>
   );
 }
-
-function SiteFooter() {
-  const { t } = useI18n();
-  return (
-    <footer className="border-t border-border/60 bg-card/30 mt-20">
-      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
-        <div className="grid gap-6 md:grid-cols-3">
-          <div>
-            <div className="font-mono font-bold text-foreground">HACKATON BUJUMBURA</div>
-            <p className="mt-2">Free Tech Institute × Vexl<br/>Bujumbura, Burundi</p>
-          </div>
-          <div>
-            <div className="font-semibold text-foreground">{t("footer.contact")}</div>
-            <p className="mt-2">Barakana Guy Eudes<br/>barakanaguyeudes@gmail.com<br/>+257 62 86 76 52</p>
-          </div>
-          <div>
-            <div className="font-semibold text-foreground">{t("footer.partners")}</div>
-            <p className="mt-2 whitespace-pre-line">{t("footer.partners.body")}</p>
-          </div>
-        </div>
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 md:flex-row">
-          <div className="text-xs">{t("footer.copy")}</div>
-          <SettingsToggles />
-        </div>
-      </div>
-    </footer>
-  );
-}
