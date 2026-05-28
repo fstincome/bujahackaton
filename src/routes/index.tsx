@@ -207,6 +207,8 @@ function Landing() {
           </div>
         </div>
       </section>
+
+      <ContactSection />
     </main>
   );
 }

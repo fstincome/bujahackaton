@@ -5,6 +5,7 @@ import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp, LogOut } from "lucid
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, PieChart, Pie, Legend } from "recharts";
 import { useI18n } from "@/lib/providers";
 import { SpeakersAdmin } from "@/components/SpeakersAdmin";
+import { ContactMessagesAdmin } from "@/components/ContactMessagesAdmin";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
@@ -223,6 +224,10 @@ function Dashboard() {
 
       <div className="mt-6">
         <SpeakersAdmin />
+      </div>
+
+      <div className="mt-6">
+        <ContactMessagesAdmin />
       </div>
     </main>
   );
