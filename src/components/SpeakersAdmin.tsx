@@ -77,7 +77,9 @@ function SpeakerCard({ speaker, onChange, onDelete }: { speaker: Speaker; onChan
   const dirty =
     draft.name !== speaker.name ||
     draft.role !== speaker.role ||
+    draft.role_en !== speaker.role_en ||
     draft.bio !== speaker.bio ||
+    draft.bio_en !== speaker.bio_en ||
     draft.twitter_url !== speaker.twitter_url ||
     draft.sort_order !== speaker.sort_order;
 
@@ -88,7 +90,9 @@ function SpeakerCard({ speaker, onChange, onDelete }: { speaker: Speaker; onChan
       .update({
         name: draft.name,
         role: draft.role,
+        role_en: draft.role_en,
         bio: draft.bio,
+        bio_en: draft.bio_en,
         twitter_url: draft.twitter_url,
         sort_order: draft.sort_order,
         updated_at: new Date().toISOString(),
