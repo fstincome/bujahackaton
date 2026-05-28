@@ -64,7 +64,7 @@ function Landing() {
               { v: "30", l: t("stat.participants") },
               { v: "2", l: t("stat.hackathons") },
               { v: "3", l: t("stat.workshops") },
-              { v: "300$", l: t("stat.prize") },
+              { v: "✓", l: t("stat.prize") },
             ].map((s) => (
               <div key={s.l} className="rounded-xl border border-border bg-card/60 p-5 backdrop-blur">
                 <div className="text-3xl font-bold text-primary">{s.v}</div>
