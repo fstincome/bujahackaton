@@ -83,6 +83,59 @@ export type Database = {
         }
         Relationships: []
       }
+      schedule_slots: {
+        Row: {
+          created_at: string
+          day: number
+          end_time: string | null
+          id: string
+          sort_order: number
+          speaker_id: string | null
+          start_time: string
+          theme: string | null
+          theme_en: string | null
+          title: string
+          title_en: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          day: number
+          end_time?: string | null
+          id?: string
+          sort_order?: number
+          speaker_id?: string | null
+          start_time: string
+          theme?: string | null
+          theme_en?: string | null
+          title?: string
+          title_en?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          day?: number
+          end_time?: string | null
+          id?: string
+          sort_order?: number
+          speaker_id?: string | null
+          start_time?: string
+          theme?: string | null
+          theme_en?: string | null
+          title?: string
+          title_en?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_slots_speaker_id_fkey"
+            columns: ["speaker_id"]
+            isOneToOne: false
+            referencedRelation: "speakers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       speakers: {
         Row: {
           avatar_url: string | null
