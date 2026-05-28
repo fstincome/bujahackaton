@@ -102,9 +102,23 @@ function RootComponent() {
           <Outlet />
           <ThemedToaster />
           <InstallPwaPrompt />
+          <SiteFooter />
         </QueryClientProvider>
       </I18nProvider>
     </ThemeProvider>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer className="border-t border-border/60 bg-background/80 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <p className="text-xs text-muted-foreground">
+          © {new Date().getFullYear()} Hackaton Bujumbura.
+        </p>
+        <SettingsToggles />
+      </div>
+    </footer>
   );
 }
 
