@@ -135,6 +135,52 @@ function Landing() {
         </div>
       </section>
 
+      {/* Agenda détaillé */}
+      <section id="agenda" className="mx-auto max-w-6xl px-6 py-20">
+        <div className="text-center">
+          <div className="font-mono text-xs uppercase tracking-widest text-primary">{t("agenda.kicker")}</div>
+          <h2 className="mt-3 text-4xl font-bold">{t("agenda.title")}</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">{t("agenda.subtitle")}</p>
+        </div>
+        <div className="mt-12 grid gap-8 md:grid-cols-2">
+          {[1, 2].map((day) => {
+            const daySlots = slots.filter((s) => s.day === day);
+            return (
+              <div key={day} className="rounded-xl border border-border bg-card p-6">
+                <h3 className="font-mono text-xs uppercase tracking-widest text-primary">
+                  {day === 1 ? t("agenda.day1") : t("agenda.day2")}
+                </h3>
+                {daySlots.length === 0 ? (
+                  <div className="mt-6 text-sm text-muted-foreground">{t("agenda.empty")}</div>
+                ) : (
+                  <ol className="mt-6 space-y-4">
+                    {daySlots.map((s) => {
+                      const title = lang === "en" ? (s.title_en || s.title) : s.title;
+                      const theme = lang === "en" ? (s.theme_en || s.theme) : s.theme;
+                      const sp = speakerName(s.speaker_id);
+                      return (
+                        <li key={s.id} className="flex gap-4 border-l-2 border-primary/40 pl-4">
+                          <div className="min-w-[80px] font-mono text-xs text-primary">
+                            {s.start_time}{s.end_time ? `–${s.end_time}` : ""}
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-semibold">{title}</div>
+                            {theme && <div className="mt-1 text-xs text-muted-foreground">{theme}</div>}
+                            {sp && <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">{t("agenda.by")} {sp}</div>}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+
+
       {/* Trainers */}
       <section id="trainers" className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
