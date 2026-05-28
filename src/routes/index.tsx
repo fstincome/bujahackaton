@@ -163,9 +163,6 @@ function Landing() {
             </div>
           ))}
         </div>
-            </div>
-          ))}
-        </div>
         <div className="mt-6 rounded-xl border border-primary/30 bg-primary/5 p-6 text-center">
           <Sparkles className="mx-auto h-6 w-6 text-primary" />
           <p className="mt-2 text-sm">
