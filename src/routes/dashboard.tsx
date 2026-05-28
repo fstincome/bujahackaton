@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp, LogOut } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, PieChart, Pie, Legend } from "recharts";
 import { useI18n } from "@/lib/providers";
+import { SpeakersAdmin } from "@/components/SpeakersAdmin";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
@@ -219,6 +220,10 @@ function Dashboard() {
           </div>
         )}
       </Card>
+
+      <div className="mt-6">
+        <SpeakersAdmin />
+      </div>
     </main>
   );
 }
