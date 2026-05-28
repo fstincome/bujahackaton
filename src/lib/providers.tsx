@@ -195,7 +195,7 @@ const dict: Record<Lang, Record<string, string>> = {
     "stat.participants": "Participants",
     "stat.hackathons": "Hackathons",
     "stat.workshops": "Workshops",
-    "stat.prize": "USDT prizes",
+    "stat.prize": "Prizes",
     "program.kicker": "// Program",
     "program.title": "From theory to practice",
     "program.subtitle": "Three preparatory workshops, followed by two full-day hackathons.",
