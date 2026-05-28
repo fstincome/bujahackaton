@@ -17,11 +17,13 @@ export type Database = {
       registrations: {
         Row: {
           created_at: string
+          dev_role: string | null
           email: string
           experience_level: string
           full_name: string
           hackathon_choice: string
           id: string
+          languages: string[] | null
           motivation: string | null
           phone: string | null
           profession: string | null
@@ -29,11 +31,13 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          dev_role?: string | null
           email: string
           experience_level?: string
           full_name: string
           hackathon_choice?: string
           id?: string
+          languages?: string[] | null
           motivation?: string | null
           phone?: string | null
           profession?: string | null
@@ -41,11 +45,13 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          dev_role?: string | null
           email?: string
           experience_level?: string
           full_name?: string
           hackathon_choice?: string
           id?: string
+          languages?: string[] | null
           motivation?: string | null
           phone?: string | null
           profession?: string | null
