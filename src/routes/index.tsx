@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { getPublicRegistrationCount } from "@/lib/admin.functions";
 import { useI18n } from "@/lib/providers";
 import heroBg from "@/assets/hero-bg.jpg";
