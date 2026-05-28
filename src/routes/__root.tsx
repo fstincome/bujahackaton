@@ -111,10 +111,13 @@ function SiteNav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2 font-mono text-sm font-bold">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">₿</span>
-          <span>BTC<span className="text-primary">.hack</span>.bi</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-2 font-mono text-sm font-bold">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">₿</span>
+            <span>BTC<span className="text-primary">.hack</span>.bi</span>
+          </Link>
+          <SettingsToggles />
+        </div>
         <div className="hidden items-center gap-8 text-sm md:flex">
           <Link to="/" hash="program" className="text-muted-foreground hover:text-foreground">{t("nav.program")}</Link>
           <Link to="/" hash="schedule" className="text-muted-foreground hover:text-foreground">{t("nav.schedule")}</Link>
@@ -122,7 +125,6 @@ function SiteNav() {
           <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">{t("nav.dashboard")}</Link>
         </div>
         <div className="flex items-center gap-2">
-          <SettingsToggles />
           <Link to="/register" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
             {t("nav.register")}
           </Link>
@@ -151,7 +153,10 @@ function SiteFooter() {
             <p className="mt-2 whitespace-pre-line">{t("footer.partners.body")}</p>
           </div>
         </div>
-        <div className="mt-8 border-t border-border/60 pt-6 text-xs">{t("footer.copy")}</div>
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 md:flex-row">
+          <div className="text-xs">{t("footer.copy")}</div>
+          <SettingsToggles />
+        </div>
       </div>
     </footer>
   );
