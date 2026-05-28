@@ -13,9 +13,13 @@ export const Route = createFileRoute("/")({
 function Landing() {
   const { t } = useI18n();
   const [count, setCount] = useState<number | null>(null);
+  const [speakers, setSpeakers] = useState<Array<{ id: string; name: string; role: string | null; bio: string | null; twitter_url: string | null; avatar_url: string | null }>>([]);
 
   useEffect(() => {
     getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
+    supabase.from("speakers").select("id,name,role,bio,twitter_url,avatar_url").order("sort_order").then(({ data }) => {
+      if (data) setSpeakers(data as any);
+    });
   }, []);
 
   return (
