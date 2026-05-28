@@ -114,7 +114,7 @@ function SiteNav() {
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2 font-mono text-sm font-bold">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">₿</span>
-            <span>BOOTCAMP<span className="text-primary"> BUJUMBURA</span></span>
+            <span>HACKATON<span className="text-primary"> BUJUMBURA</span></span>
           </Link>
           <SettingsToggles />
         </div>
@@ -141,7 +141,7 @@ function SiteFooter() {
       <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
         <div className="grid gap-6 md:grid-cols-3">
           <div>
-            <div className="font-mono font-bold text-foreground">BOOTCAMP BUJUMBURA</div>
+            <div className="font-mono font-bold text-foreground">HACKATON BUJUMBURA</div>
             <p className="mt-2">Free Tech Institute × Vexl<br/>Bujumbura, Burundi</p>
           </div>
           <div>
