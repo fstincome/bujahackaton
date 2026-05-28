@@ -7,7 +7,9 @@ export type Speaker = {
   id: string;
   name: string;
   role: string | null;
+  role_en: string | null;
   bio: string | null;
+  bio_en: string | null;
   twitter_url: string | null;
   avatar_url: string | null;
   sort_order: number;
