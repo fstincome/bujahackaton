@@ -10,6 +10,7 @@ import {
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider, ThemeProvider, useI18n, useTheme } from "@/lib/providers";
 import { SettingsToggles } from "@/components/SettingsToggles";
+import { InstallPwaPrompt } from "@/components/InstallPwaPrompt";
 
 import appCss from "../styles.css?url";
 
@@ -60,7 +61,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/icon-512.png" },
+      { rel: "apple-touch-icon", href: "/icon-512.png" },
+      { rel: "manifest", href: "/manifest.json" },
+      { rel: "theme-color", href: "#f7931a" } as any,
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
