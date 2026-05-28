@@ -1,0 +1,1 @@
+ALTER TABLE public.registrations ADD COLUMN IF NOT EXISTS dev_role TEXT, ADD COLUMN IF NOT EXISTS languages TEXT[] DEFAULT '{}'::text[];
