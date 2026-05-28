@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getPublicRegistrationCount } from "@/lib/admin.functions";
 import { useI18n } from "@/lib/providers";
+import { ContactSection } from "@/components/ContactSection";
 import heroBg from "@/assets/hero-bg.jpg";
 import { Zap, Calendar, Users, Trophy, Code2, Network, Shield, Sparkles } from "lucide-react";
 
@@ -206,6 +207,8 @@ function Landing() {
           </div>
         </div>
       </section>
+
+      <ContactSection />
     </main>
   );
 }
