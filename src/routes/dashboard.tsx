@@ -220,6 +220,10 @@ function Dashboard() {
           </div>
         )}
       </Card>
+
+      <div className="mt-6">
+        <SpeakersAdmin />
+      </div>
     </main>
   );
 }
