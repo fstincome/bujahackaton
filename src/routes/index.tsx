@@ -136,28 +136,33 @@ function Landing() {
           <h2 className="mt-3 text-4xl font-bold">{t("trainers.title")}</h2>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {[
-            { n: "Advaxe Ndayisenga", r: t("trainers.lead"), x: "https://x.com/AdvaxeIr", img: "/speakers/advaxe.png", bio: t("trainers.bio.advaxe") },
-            { n: "Belyi Nobel Kubwayo", r: t("trainers.role"), x: "https://x.com/belyi_nobel", img: "/speakers/belyi.png", bio: t("trainers.bio.belyi") },
-            { n: "Wilfried Cubahiro", r: t("trainers.role"), img: "/speakers/wilfried.png", bio: t("trainers.bio.wilfried") },
-          ].map((p) => (
-            <div key={p.n} className="rounded-xl border border-border bg-card p-6 text-center">
-              <img
-                src={p.img}
-                alt={p.n}
-                loading="lazy"
-                width={96}
-                height={96}
-                className="mx-auto h-24 w-24 rounded-full object-cover border-2 border-primary/20"
-              />
-              <h3 className="mt-4 font-semibold">{p.n}</h3>
-              <p className="text-xs text-muted-foreground">{p.r}</p>
-              <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{p.bio}</p>
-              {p.x && (
-                <a href={p.x} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-primary hover:underline">
+          {speakers.map((p) => (
+            <div key={p.id} className="rounded-xl border border-border bg-card p-6 text-center">
+              {p.avatar_url ? (
+                <img
+                  src={p.avatar_url}
+                  alt={p.name}
+                  loading="lazy"
+                  width={96}
+                  height={96}
+                  className="mx-auto h-24 w-24 rounded-full object-cover border-2 border-primary/20"
+                />
+              ) : (
+                <div className="mx-auto h-24 w-24 rounded-full bg-secondary flex items-center justify-center text-sm text-muted-foreground border-2 border-primary/20">
+                  {p.name.slice(0, 2).toUpperCase()}
+                </div>
+              )}
+              <h3 className="mt-4 font-semibold">{p.name}</h3>
+              {p.role && <p className="text-xs text-muted-foreground">{p.role}</p>}
+              {p.bio && <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{p.bio}</p>}
+              {p.twitter_url && (
+                <a href={p.twitter_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-primary hover:underline">
                   @x →
                 </a>
               )}
+            </div>
+          ))}
+        </div>
             </div>
           ))}
         </div>
