@@ -154,8 +154,8 @@ function Landing() {
                 </div>
               )}
               <h3 className="mt-4 font-semibold">{p.name}</h3>
-              {p.role && <p className="text-xs text-muted-foreground">{p.role}</p>}
-              {p.bio && <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{p.bio}</p>}
+              {(lang === "en" ? p.role_en || p.role : p.role) && <p className="text-xs text-muted-foreground">{lang === "en" ? p.role_en || p.role : p.role}</p>}
+              {(lang === "en" ? p.bio_en || p.bio : p.bio) && <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{lang === "en" ? p.bio_en || p.bio : p.bio}</p>}
               {p.twitter_url && (
                 <a href={p.twitter_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-primary hover:underline">
                   @x →
