@@ -6,6 +6,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, PieCha
 import { useI18n } from "@/lib/providers";
 import { SpeakersAdmin } from "@/components/SpeakersAdmin";
 import { ScheduleAdmin } from "@/components/ScheduleAdmin";
+import { CohortsAdmin } from "@/components/CohortsAdmin";
 import { ContactMessagesAdmin } from "@/components/ContactMessagesAdmin";
 
 export const Route = createFileRoute("/dashboard")({
