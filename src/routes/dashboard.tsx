@@ -225,6 +225,10 @@ function Dashboard() {
       </Card>
 
       <div className="mt-6">
+        <CohortsAdmin />
+      </div>
+
+      <div className="mt-6">
         <ScheduleAdmin />
       </div>
 
