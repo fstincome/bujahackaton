@@ -5,6 +5,7 @@ import { useI18n } from "@/lib/providers";
 
 export type Slot = {
   id: string;
+  cohort_id: string | null;
   day: number;
   start_time: string;
   end_time: string | null;
@@ -17,30 +18,47 @@ export type Slot = {
 };
 
 type Speaker = { id: string; name: string };
+type Cohort = { id: string; name: string; is_active: boolean };
 
 export function ScheduleAdmin() {
   const { t } = useI18n();
   const [slots, setSlots] = useState<Slot[]>([]);
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
+  const [cohorts, setCohorts] = useState<Cohort[]>([]);
+  const [cohortId, setCohortId] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
+  async function loadCohorts() {
+    const { data } = await supabase.from("cohorts").select("id,name,is_active").order("sort_order");
+    if (data) {
+      setCohorts(data as Cohort[]);
+      if (!cohortId) {
+        const active = (data as Cohort[]).find((c) => c.is_active) ?? data[0];
+        if (active) setCohortId(active.id);
+      }
+    }
+  }
+
   async function load() {
+    if (!cohortId) return;
     setLoading(true);
     const [{ data: s }, { data: sp }] = await Promise.all([
-      supabase.from("schedule_slots").select("*").order("day").order("sort_order").order("start_time"),
+      supabase.from("schedule_slots").select("*").eq("cohort_id", cohortId).order("day").order("sort_order").order("start_time"),
       supabase.from("speakers").select("id,name").order("sort_order"),
     ]);
     if (s) setSlots(s as Slot[]);
     if (sp) setSpeakers(sp as Speaker[]);
     setLoading(false);
   }
-  useEffect(() => { load(); }, []);
+  useEffect(() => { loadCohorts(); }, []);
+  useEffect(() => { load(); }, [cohortId]);
 
   async function addNew(day: number) {
+    if (!cohortId) return;
     const count = slots.filter((x) => x.day === day).length;
     const { data, error } = await supabase
       .from("schedule_slots")
-      .insert({ day, start_time: "09:00", title: "Nouveau créneau", sort_order: count + 1 })
+      .insert({ day, start_time: "09:00", title: "Nouveau créneau", sort_order: count + 1, cohort_id: cohortId })
       .select()
       .single();
     if (!error && data) setSlots((s) => [...s, data as Slot]);
@@ -54,15 +72,31 @@ export function ScheduleAdmin() {
 
   return (
     <div className="rounded-xl border border-border bg-card p-6">
-      <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">{t("sa.title")}</h3>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">{t("sa.title")}</h3>
+        <div className="flex items-center gap-2">
+          <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Cohorte</label>
+          <select
+            value={cohortId}
+            onChange={(e) => setCohortId(e.target.value)}
+            className="rounded-md border border-border bg-background px-2 py-1.5 text-xs"
+          >
+            {cohorts.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}{c.is_active ? " ★" : ""}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       {loading ? (
         <div className="py-8 text-center text-sm text-muted-foreground">{t("loading")}</div>
+      ) : !cohortId ? (
+        <div className="py-8 text-center text-sm text-muted-foreground">Créez d'abord une cohorte.</div>
       ) : (
         <div className="mt-4 grid gap-6 md:grid-cols-2">
           {[1, 2].map((day) => (
             <div key={day}>
               <div className="flex items-center justify-between">
-                <h4 className="font-semibold">{t("sa.day")} {day} — {day === 1 ? "5" : "6"} juin</h4>
+                <h4 className="font-semibold">{t("sa.day")} {day}</h4>
                 <button
                   onClick={() => addNew(day)}
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
