@@ -157,6 +157,11 @@ function Landing() {
           <div className="font-mono text-xs uppercase tracking-widest text-primary">{t("agenda.kicker")}</div>
           <h2 className="mt-3 text-4xl font-bold">{t("agenda.title")}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">{t("agenda.subtitle")}</p>
+          {activeCohort && (
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-primary">
+              {activeCohort.name}{activeCohort.location ? ` · ${activeCohort.location}` : ""}
+            </div>
+          )}
         </div>
         <div className="mt-12 grid gap-8 md:grid-cols-2">
           {[1, 2].map((day) => {
