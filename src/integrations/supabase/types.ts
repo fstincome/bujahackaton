@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      cohorts: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          id: string
+          is_active: boolean
+          location: string | null
+          name: string
+          slug: string
+          sort_order: number
+          start_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean
+          location?: string | null
+          name: string
+          slug: string
+          sort_order?: number
+          start_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean
+          location?: string | null
+          name?: string
+          slug?: string
+          sort_order?: number
+          start_date?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -40,6 +79,7 @@ export type Database = {
       }
       registrations: {
         Row: {
+          cohort_id: string | null
           created_at: string
           dev_role: string | null
           email: string
@@ -54,6 +94,7 @@ export type Database = {
           status: string
         }
         Insert: {
+          cohort_id?: string | null
           created_at?: string
           dev_role?: string | null
           email: string
@@ -68,6 +109,7 @@ export type Database = {
           status?: string
         }
         Update: {
+          cohort_id?: string | null
           created_at?: string
           dev_role?: string | null
           email?: string
@@ -81,10 +123,19 @@ export type Database = {
           profession?: string | null
           status?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "registrations_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       schedule_slots: {
         Row: {
+          cohort_id: string | null
           created_at: string
           day: number
           end_time: string | null
@@ -99,6 +150,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          cohort_id?: string | null
           created_at?: string
           day: number
           end_time?: string | null
@@ -113,6 +165,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          cohort_id?: string | null
           created_at?: string
           day?: number
           end_time?: string | null
@@ -128,6 +181,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "schedule_slots_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "schedule_slots_speaker_id_fkey"
             columns: ["speaker_id"]
             isOneToOne: false
@@ -141,6 +201,7 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           bio_en: string | null
+          cohort_id: string | null
           created_at: string
           id: string
           name: string
@@ -154,6 +215,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           bio_en?: string | null
+          cohort_id?: string | null
           created_at?: string
           id?: string
           name: string
@@ -167,6 +229,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           bio_en?: string | null
+          cohort_id?: string | null
           created_at?: string
           id?: string
           name?: string
@@ -176,7 +239,15 @@ export type Database = {
           twitter_url?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "speakers_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
