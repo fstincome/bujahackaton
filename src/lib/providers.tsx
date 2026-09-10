@@ -141,7 +141,10 @@ const dict: Record<Lang, Record<string, string>> = {
     "back": "Retour",
     "reg.kicker": "// Candidature",
     "reg.title": "Inscription au HACKATON BUJUMBURA",
-    "reg.subtitle": "30 places. Workshops + 2 hackathons à l'Hôtel Emeraude, Bujumbura, 5-6 juin 2026.",
+    "reg.subtitle": "30 places par édition. Choisissez l'édition à laquelle vous souhaitez participer.",
+    "reg.cohort": "Édition *",
+    "reg.cohort.help": "Bujumbura (Hôtel Emeraude) ou Gitega (UPG).",
+
     "reg.full_name": "Nom complet *",
     "reg.email": "Email *",
     "reg.phone": "Téléphone",
@@ -310,7 +313,10 @@ const dict: Record<Lang, Record<string, string>> = {
     "back": "Back",
     "reg.kicker": "// Application",
     "reg.title": "HACKATON BUJUMBURA registration",
-    "reg.subtitle": "30 spots. Workshops + 2 hackathons at Hôtel Emeraude, Bujumbura, June 5–6, 2026.",
+    "reg.subtitle": "30 spots per edition. Pick the edition you want to attend.",
+    "reg.cohort": "Edition *",
+    "reg.cohort.help": "Bujumbura (Hôtel Emeraude) or Gitega (UPG).",
+
     "reg.full_name": "Full name *",
     "reg.email": "Email *",
     "reg.phone": "Phone",
