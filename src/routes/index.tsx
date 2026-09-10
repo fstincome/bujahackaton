@@ -11,39 +11,74 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
+type Cohort = {
+  id: string;
+  name: string;
+  slug: string;
+  city: string | null;
+  venue: string | null;
+  location: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  days: number;
+  tagline: string | null;
+  tagline_en: string | null;
+  summary: string | null;
+  summary_en: string | null;
+  highlights: string[] | null;
+  highlights_en: string[] | null;
+  is_active: boolean;
+};
+
 function Landing() {
   const { t, lang } = useI18n();
   const [count, setCount] = useState<number | null>(null);
   const [speakers, setSpeakers] = useState<Array<{ id: string; name: string; role: string | null; role_en: string | null; bio: string | null; bio_en: string | null; twitter_url: string | null; avatar_url: string | null }>>([]);
   const [slots, setSlots] = useState<Array<{ id: string; day: number; start_time: string; end_time: string | null; title: string; title_en: string | null; theme: string | null; theme_en: string | null; speaker_id: string | null; sort_order: number }>>([]);
-  const [activeCohort, setActiveCohort] = useState<{ id: string; name: string; location: string | null; start_date: string | null; end_date: string | null } | null>(null);
+  const [cohorts, setCohorts] = useState<Cohort[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
-    supabase.from("speakers").select("id,name,role,role_en,bio,bio_en,twitter_url,avatar_url").order("sort_order").then(({ data }) => {
-      if (data) setSpeakers(data as any);
-    });
-    (async () => {
-      const { data: cohort } = await supabase
-        .from("cohorts")
-        .select("id,name,location,start_date,end_date")
-        .eq("is_active", true)
-        .order("sort_order")
-        .limit(1)
-        .maybeSingle();
-      if (cohort) {
-        setActiveCohort(cohort as any);
-        const { data } = await supabase
-          .from("schedule_slots")
-          .select("*")
-          .eq("cohort_id", cohort.id)
-          .order("day").order("sort_order").order("start_time");
-        if (data) setSlots(data as any);
-      }
-    })();
+    supabase
+      .from("cohorts")
+      .select("id,name,slug,city,venue,location,start_date,end_date,days,tagline,tagline_en,summary,summary_en,highlights,highlights_en,is_active")
+      .eq("is_public", true)
+      .order("sort_order")
+      .then(({ data }) => {
+        if (!data || data.length === 0) return;
+        const list = data as unknown as Cohort[];
+        setCohorts(list);
+        setSelectedId((prev) => prev ?? (list.find((c) => c.is_active)?.id ?? list[0].id));
+      });
   }, []);
 
+  useEffect(() => {
+    if (!selectedId) return;
+    (async () => {
+      const { data: sl } = await supabase
+        .from("schedule_slots")
+        .select("*")
+        .eq("cohort_id", selectedId)
+        .order("day").order("sort_order").order("start_time");
+      setSlots((sl ?? []) as any);
+      const { data: sp } = await supabase
+        .from("speakers")
+        .select("id,name,role,role_en,bio,bio_en,twitter_url,avatar_url,cohort_id")
+        .or(`cohort_id.eq.${selectedId},cohort_id.is.null`)
+        .order("sort_order");
+      setSpeakers((sp ?? []) as any);
+    })();
+  }, [selectedId]);
+
+  const selected = cohorts.find((c) => c.id === selectedId) ?? null;
+  const activeCohort = selected;
+  const highlights = (lang === "en" ? selected?.highlights_en : selected?.highlights) ?? selected?.highlights ?? [];
+  const dateFmt = (d: string | null) =>
+    d ? new Date(d).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US", { day: "numeric", month: "long", year: "numeric" }) : "";
+
   const speakerName = (id: string | null) => speakers.find((s) => s.id === id)?.name ?? null;
+
 
   return (
     <main>
