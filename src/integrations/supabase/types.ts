@@ -16,40 +16,70 @@ export type Database = {
     Tables: {
       cohorts: {
         Row: {
+          city: string | null
           created_at: string
+          days: number
           end_date: string | null
+          highlights: string[]
+          highlights_en: string[]
           id: string
           is_active: boolean
+          is_public: boolean
           location: string | null
           name: string
           slug: string
           sort_order: number
           start_date: string | null
+          summary: string | null
+          summary_en: string | null
+          tagline: string | null
+          tagline_en: string | null
           updated_at: string
+          venue: string | null
         }
         Insert: {
+          city?: string | null
           created_at?: string
+          days?: number
           end_date?: string | null
+          highlights?: string[]
+          highlights_en?: string[]
           id?: string
           is_active?: boolean
+          is_public?: boolean
           location?: string | null
           name: string
           slug: string
           sort_order?: number
           start_date?: string | null
+          summary?: string | null
+          summary_en?: string | null
+          tagline?: string | null
+          tagline_en?: string | null
           updated_at?: string
+          venue?: string | null
         }
         Update: {
+          city?: string | null
           created_at?: string
+          days?: number
           end_date?: string | null
+          highlights?: string[]
+          highlights_en?: string[]
           id?: string
           is_active?: boolean
+          is_public?: boolean
           location?: string | null
           name?: string
           slug?: string
           sort_order?: number
           start_date?: string | null
+          summary?: string | null
+          summary_en?: string | null
+          tagline?: string | null
+          tagline_en?: string | null
           updated_at?: string
+          venue?: string | null
         }
         Relationships: []
       }
