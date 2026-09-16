@@ -319,6 +319,8 @@ const dict: Record<Lang, Record<string, string>> = {
     "reg.subtitle": "30 spots per edition. Pick the edition you want to attend.",
     "reg.cohort": "Edition *",
     "reg.cohort.help": "Bujumbura (Hôtel Emeraude) or Gitega (UPG).",
+    "reg.group": "Group you belong to *",
+    "reg.group.ph": "University, association, company, community…",
 
     "reg.full_name": "Full name *",
     "reg.email": "Email *",
