@@ -128,9 +128,9 @@ function Landing() {
           <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
               { v: "30", l: t("stat.participants") },
-              { v: "2", l: t("stat.hackathons") },
+              { v: String(totalDays), l: t("stat.hackathons") },
               { v: "3", l: t("stat.workshops") },
-              { v: "✓", l: t("stat.prize") },
+              { v: "2", l: t("stat.prize") },
             ].map((s) => (
               <div key={s.l} className="rounded-xl border border-border bg-card/60 p-5 backdrop-blur">
                 <div className="text-3xl font-bold text-primary">{s.v}</div>
