@@ -79,6 +79,15 @@ function Landing() {
 
   const speakerName = (id: string | null) => speakers.find((s) => s.id === id)?.name ?? null;
 
+  const totalDays = selected?.days ?? 2;
+  const dayOffset = (offset: number) => {
+    if (!selected?.start_date) return String(offset + 1).padStart(2, "0");
+    const d = new Date(selected.start_date);
+    d.setDate(d.getDate() + offset);
+    return String(d.getDate()).padStart(2, "0");
+  };
+
+
 
   return (
     <main>
