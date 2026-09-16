@@ -26,7 +26,10 @@ type Registration = {
   group_name: string | null;
   experience_level: string;
   motivation: string | null;
-  hackathon_choice: string;
+  problem_idea: string | null;
+  dev_role: string | null;
+  available_all_days: boolean | null;
+  has_laptop: boolean | null;
   status: string;
   created_at: string;
 };
