@@ -185,6 +185,7 @@ function Dashboard() {
               <thead>
                 <tr className="border-b border-border text-left font-mono text-xs uppercase tracking-wider text-muted-foreground">
                   <th className="py-3 pr-4">{t("th.candidate")}</th>
+                  <th className="py-3 pr-4">{t("th.group")}</th>
                   <th className="py-3 pr-4">{t("th.level")}</th>
                   <th className="py-3 pr-4">{t("th.hackathon")}</th>
                   <th className="py-3 pr-4">{t("th.date")}</th>
