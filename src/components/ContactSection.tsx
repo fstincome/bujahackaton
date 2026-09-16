@@ -88,11 +88,11 @@ export function ContactSection() {
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <a
-              href="mailto:barakanaguyeudes@gmail.com"
+              href="mailto:info@bitdevsgtga.org"
               className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
             >
               <Mail className="h-3.5 w-3.5" />
-              <span>barakanaguyeudes@gmail.com</span>
+              <span>info@bitdevsgtga.org</span>
             </a>
             <button
               type="submit"
