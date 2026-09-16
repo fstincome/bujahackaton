@@ -22,9 +22,11 @@ const schema = z.object({
   group_name: z.string().trim().min(2).max(150),
   profession: z.string().trim().max(120).optional().or(z.literal("")),
   experience_level: z.enum(["beginner", "intermediate", "advanced"]),
-  hackathon_choice: z.enum(["hackathon1", "hackathon2", "both"]),
   dev_role: z.enum(["backend", "frontend", "fullstack"]),
   languages: z.array(z.string().min(1).max(40)).max(20),
+  available_all_days: z.literal(true),
+  has_laptop: z.boolean(),
+  problem_idea: z.string().trim().max(1000).optional().or(z.literal("")),
   motivation: z.string().trim().max(1000).optional().or(z.literal("")),
 });
 
@@ -43,7 +45,12 @@ function RegisterPage() {
     e.preventDefault();
     setErrors({});
     const fd = new FormData(e.currentTarget);
-    const raw = { ...Object.fromEntries(fd.entries()), languages };
+    const raw = {
+      ...Object.fromEntries(fd.entries()),
+      languages,
+      available_all_days: fd.get("available_all_days") === "on",
+      has_laptop: fd.get("has_laptop") === "on",
+    };
     const parsed = schema.safeParse(raw);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
@@ -56,8 +63,9 @@ function RegisterPage() {
     setLoading(false);
     if (error) { toast.error("Error: " + error.message); return; }
     toast.success(t("reg.success"));
-    navigate({ to: "/dashboard" });
+    navigate({ to: "/" });
   }
+
 
   const field = "w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary";
 
@@ -89,22 +97,14 @@ function RegisterPage() {
           <Field label={t("reg.group")} error={errors.group_name}>
             <input name="group_name" required maxLength={150} className={field} placeholder={t("reg.group.ph")} />
           </Field>
-          <div className="grid gap-5 md:grid-cols-2">
-            <Field label={t("reg.level")}>
-              <select name="experience_level" defaultValue="beginner" className={field} required>
-                <option value="beginner">{t("level.beginner")}</option>
-                <option value="intermediate">{t("level.intermediate")}</option>
-                <option value="advanced">{t("level.advanced")}</option>
-              </select>
-            </Field>
-            <Field label={t("reg.hack")}>
-              <select name="hackathon_choice" defaultValue="both" className={field} required>
-                <option value="both">{t("hack.both")}</option>
-                <option value="hackathon1">{t("hack.1")}</option>
-                <option value="hackathon2">{t("hack.2")}</option>
-              </select>
-            </Field>
-          </div>
+          <Field label={t("reg.level")}>
+            <select name="experience_level" defaultValue="beginner" className={field} required>
+              <option value="beginner">{t("level.beginner")}</option>
+              <option value="intermediate">{t("level.intermediate")}</option>
+              <option value="advanced">{t("level.advanced")}</option>
+            </select>
+          </Field>
+
 
           <Field label={t("reg.role")} error={errors.dev_role}>
             <div className="grid grid-cols-3 gap-2">
@@ -143,9 +143,32 @@ function RegisterPage() {
             </div>
           </Field>
 
+          <Field label={t("reg.problem")} error={errors.problem_idea}>
+            <textarea name="problem_idea" rows={3} maxLength={1000} className={field} placeholder={t("reg.problem.ph")} />
+          </Field>
+
           <Field label={t("reg.motivation")} error={errors.motivation}>
             <textarea name="motivation" rows={4} maxLength={1000} className={field} placeholder={t("reg.motivation.ph")} />
           </Field>
+
+          <div className="grid gap-3 rounded-lg border border-border bg-background p-4">
+            <label className="flex items-start gap-3 text-sm">
+              <input type="checkbox" name="available_all_days" required className="mt-0.5 h-4 w-4 accent-primary" />
+              <span>
+                <span className="block font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("reg.avail")}</span>
+                {t("reg.avail.help")}
+              </span>
+            </label>
+            {errors.available_all_days && <span className="text-xs text-destructive">{t("reg.avail.help")}</span>}
+            <label className="flex items-start gap-3 text-sm">
+              <input type="checkbox" name="has_laptop" className="mt-0.5 h-4 w-4 accent-primary" />
+              <span>
+                <span className="block font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("reg.laptop")}</span>
+                {t("reg.laptop.help")}
+              </span>
+            </label>
+          </div>
+
 
           <button
             type="submit"
