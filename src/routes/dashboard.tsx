@@ -80,9 +80,9 @@ function Dashboard() {
   }, [rows]);
 
   const byHackathon = useMemo(() => ([
-    { name: "Hack #1", value: rows.filter((r) => r.hackathon_choice === "hackathon1").length },
-    { name: "Hack #2", value: rows.filter((r) => r.hackathon_choice === "hackathon2").length },
-    { name: t("hack.both.short"), value: rows.filter((r) => r.hackathon_choice === "both").length },
+    { name: t("role.backend"), value: rows.filter((r) => r.dev_role === "backend").length },
+    { name: t("role.frontend"), value: rows.filter((r) => r.dev_role === "frontend").length },
+    { name: t("role.fullstack"), value: rows.filter((r) => r.dev_role === "fullstack").length },
   ]), [rows, t]);
 
   const byLevel = useMemo(() => ([
@@ -96,8 +96,9 @@ function Dashboard() {
   function levelLabel(l: string) {
     return { beginner: t("level.beginner"), intermediate: t("level.intermediate"), advanced: t("level.advanced") }[l] ?? l;
   }
-  function hackLabel(h: string) {
-    return { hackathon1: "Hack #1", hackathon2: "Hack #2", both: t("hack.both.short") }[h] ?? h;
+  function hackLabel(h: string | null) {
+    if (!h) return "—";
+    return { backend: t("role.backend"), frontend: t("role.frontend"), fullstack: t("role.fullstack") }[h] ?? h;
   }
 
   return (
