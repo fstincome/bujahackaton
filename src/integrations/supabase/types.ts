@@ -115,6 +115,7 @@ export type Database = {
           email: string
           experience_level: string
           full_name: string
+          group_name: string | null
           hackathon_choice: string
           id: string
           languages: string[] | null
@@ -130,6 +131,7 @@ export type Database = {
           email: string
           experience_level?: string
           full_name: string
+          group_name?: string | null
           hackathon_choice?: string
           id?: string
           languages?: string[] | null
@@ -145,6 +147,7 @@ export type Database = {
           email?: string
           experience_level?: string
           full_name?: string
+          group_name?: string | null
           hackathon_choice?: string
           id?: string
           languages?: string[] | null
