@@ -165,8 +165,8 @@ function Landing() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {[
-              { d: "05", m: t("sched.month"), tt: t("sched.h1.t"), s: t("sched.h1.s") },
-              { d: "06", m: t("sched.month"), tt: t("sched.h2.t"), s: t("sched.h2.s") },
+              { d: dayOffset(0), m: t("sched.month"), tt: t("sched.h1.t"), s: t("sched.h1.s") },
+              { d: dayOffset(3), m: t("sched.month"), tt: t("sched.h2.t"), s: t("sched.h2.s") },
             ].map((e) => (
               <div key={e.tt} className="flex items-center gap-6 rounded-xl border border-border bg-background p-6">
                 <div className="flex h-24 w-24 flex-col items-center justify-center rounded-lg bg-primary/10 border border-primary/30">
