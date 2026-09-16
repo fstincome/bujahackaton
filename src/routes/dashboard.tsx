@@ -192,6 +192,8 @@ function Dashboard() {
                   <th className="py-3 pr-4">{t("th.group")}</th>
                   <th className="py-3 pr-4">{t("th.level")}</th>
                   <th className="py-3 pr-4">{t("th.hackathon")}</th>
+                  <th className="py-3 pr-4">{t("th.avail")}</th>
+                  <th className="py-3 pr-4">{t("th.laptop")}</th>
                   <th className="py-3 pr-4">{t("th.date")}</th>
                   <th className="py-3 pr-4">{t("th.status")}</th>
                 </tr>
@@ -206,7 +208,9 @@ function Dashboard() {
                     </td>
                     <td className="py-3 pr-4 text-xs">{r.group_name ?? "—"}</td>
                     <td className="py-3 pr-4 text-xs">{levelLabel(r.experience_level)}</td>
-                    <td className="py-3 pr-4 text-xs">{hackLabel(r.hackathon_choice)}</td>
+                    <td className="py-3 pr-4 text-xs">{hackLabel(r.dev_role)}</td>
+                    <td className="py-3 pr-4 text-xs">{r.available_all_days ? t("yes") : t("no")}</td>
+                    <td className="py-3 pr-4 text-xs">{r.has_laptop ? t("yes") : t("no")}</td>
                     <td className="py-3 pr-4 font-mono text-xs text-muted-foreground">
                       {new Date(r.created_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US")}
                     </td>
