@@ -22,9 +22,11 @@ const schema = z.object({
   group_name: z.string().trim().min(2).max(150),
   profession: z.string().trim().max(120).optional().or(z.literal("")),
   experience_level: z.enum(["beginner", "intermediate", "advanced"]),
-  hackathon_choice: z.enum(["hackathon1", "hackathon2", "both"]),
   dev_role: z.enum(["backend", "frontend", "fullstack"]),
   languages: z.array(z.string().min(1).max(40)).max(20),
+  available_all_days: z.literal(true),
+  has_laptop: z.boolean(),
+  problem_idea: z.string().trim().max(1000).optional().or(z.literal("")),
   motivation: z.string().trim().max(1000).optional().or(z.literal("")),
 });
 
