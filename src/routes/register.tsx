@@ -45,7 +45,12 @@ function RegisterPage() {
     e.preventDefault();
     setErrors({});
     const fd = new FormData(e.currentTarget);
-    const raw = { ...Object.fromEntries(fd.entries()), languages };
+    const raw = {
+      ...Object.fromEntries(fd.entries()),
+      languages,
+      available_all_days: fd.get("available_all_days") === "on",
+      has_laptop: fd.get("has_laptop") === "on",
+    };
     const parsed = schema.safeParse(raw);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
@@ -58,8 +63,9 @@ function RegisterPage() {
     setLoading(false);
     if (error) { toast.error("Error: " + error.message); return; }
     toast.success(t("reg.success"));
-    navigate({ to: "/dashboard" });
+    navigate({ to: "/" });
   }
+
 
   const field = "w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary";
 
