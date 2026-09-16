@@ -1,7 +1,7 @@
 {
-  "name": "HACKATON BUJUMBURA",
+  "name": "HACKATON GITEGA",
   "short_name": "HACKATON",
-  "description": "Bitcoin P2P hackathons in Bujumbura",
+  "description": "Formation pratique et hackathon Bitcoin P2P à Gitega",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",

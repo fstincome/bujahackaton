@@ -50,12 +50,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "HACKATON BUJUMBURA — Free Tech Institute × Vexl" },
-      { name: "description", content: "Two Bitcoin P2P hackathons in Bujumbura. Workshops, Lightning Network, Vexl. June 5-6, 2026." },
-      { property: "og:title", content: "HACKATON BUJUMBURA — Free Tech Institute × Vexl" },
-      { name: "twitter:title", content: "HACKATON BUJUMBURA — Free Tech Institute × Vexl" },
-      { property: "og:description", content: "Two Bitcoin P2P hackathons in Bujumbura. Workshops, Lightning Network, Vexl. June 5-6, 2026." },
-      { name: "twitter:description", content: "Two Bitcoin P2P hackathons in Bujumbura. Workshops, Lightning Network, Vexl. June 5-6, 2026." },
+      { title: "HACKATON GITEGA — Free Tech Institute × Vexl" },
+      { name: "description", content: "Cinq jours de formation pratique et de hackathon Bitcoin à Gitega, du 21 au 25 septembre 2026." },
+      { property: "og:title", content: "HACKATON GITEGA — Free Tech Institute × Vexl" },
+      { name: "twitter:title", content: "HACKATON GITEGA — Free Tech Institute × Vexl" },
+      { property: "og:description", content: "Cinq jours de formation pratique et de hackathon Bitcoin à Gitega, du 21 au 25 septembre 2026." },
+      { name: "twitter:description", content: "Cinq jours de formation pratique et de hackathon Bitcoin à Gitega, du 21 au 25 septembre 2026." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b5e6f47-5054-4ead-95b2-5af49e2570b7/id-preview-f0bf5088--a44de30e-96d8-4198-85b8-846cdb9d4bb4.lovable.app-1779887600948.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3b5e6f47-5054-4ead-95b2-5af49e2570b7/id-preview-f0bf5088--a44de30e-96d8-4198-85b8-846cdb9d4bb4.lovable.app-1779887600948.png" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -114,7 +114,7 @@ function SiteFooter() {
     <footer className="border-t border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Hackaton Bujumbura.
+          © {new Date().getFullYear()} Hackaton Gitega.
         </p>
         <SettingsToggles />
       </div>
@@ -135,7 +135,7 @@ function SiteNav() {
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2 font-mono text-sm font-bold">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">₿</span>
-            <span>HACKATON<span className="text-primary"> BUJUMBURA</span></span>
+            <span>HACKATON<span className="text-primary"> GITEGA</span></span>
           </Link>
           <SettingsToggles />
         </div>

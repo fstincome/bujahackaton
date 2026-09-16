@@ -72,7 +72,7 @@ export function InstallPwaPrompt() {
             <p className="mt-1 text-xs text-muted-foreground">
               {iosHint
                 ? "Appuyez sur Partager puis « Sur l'écran d'accueil » pour installer."
-                : "Ajoutez HACKATON BUJUMBURA à votre écran d'accueil."}
+                : "Ajoutez HACKATON GITEGA à votre écran d'accueil."}
             </p>
             {!iosHint && (
               <button
