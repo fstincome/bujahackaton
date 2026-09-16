@@ -208,12 +208,12 @@ function Landing() {
           )}
         </div>
         <div className="mt-12 grid gap-8 md:grid-cols-2">
-          {[1, 2].map((day) => {
+          {Array.from({ length: totalDays }, (_, i) => i + 1).map((day) => {
             const daySlots = slots.filter((s) => s.day === day);
             return (
               <div key={day} className="rounded-xl border border-border bg-card p-6">
                 <h3 className="font-mono text-xs uppercase tracking-widest text-primary">
-                  {day === 1 ? t("agenda.day1") : t("agenda.day2")}
+                  {t("agenda.day")} {day}
                 </h3>
                 {daySlots.length === 0 ? (
                   <div className="mt-6 text-sm text-muted-foreground">{t("agenda.empty")}</div>
