@@ -86,6 +86,9 @@ function RegisterPage() {
           <Field label={t("reg.profession")} error={errors.profession}>
             <input name="profession" className={field} />
           </Field>
+          <Field label={t("reg.group")} error={errors.group_name}>
+            <input name="group_name" required maxLength={150} className={field} placeholder={t("reg.group.ph")} />
+          </Field>
           <div className="grid gap-5 md:grid-cols-2">
             <Field label={t("reg.level")}>
               <select name="experience_level" defaultValue="beginner" className={field} required>
