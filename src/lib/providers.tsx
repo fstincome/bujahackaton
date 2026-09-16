@@ -144,6 +144,8 @@ const dict: Record<Lang, Record<string, string>> = {
     "reg.subtitle": "30 places par édition. Choisissez l'édition à laquelle vous souhaitez participer.",
     "reg.cohort": "Édition *",
     "reg.cohort.help": "Bujumbura (Hôtel Emeraude) ou Gitega (UPG).",
+    "reg.group": "Groupe d'appartenance *",
+    "reg.group.ph": "Université, association, entreprise, communauté…",
 
     "reg.full_name": "Nom complet *",
     "reg.email": "Email *",
