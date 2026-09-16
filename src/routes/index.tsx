@@ -288,6 +288,7 @@ function Landing() {
           </p>
         </div>
       </section>
+      )}
 
       {/* Outcomes + CTA */}
       <section className="mx-auto max-w-6xl px-6 py-20">
