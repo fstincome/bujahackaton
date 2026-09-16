@@ -247,6 +247,7 @@ function Landing() {
 
 
       {/* Trainers */}
+      {speakers.length > 0 && (
       <section id="trainers" className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
           <div className="font-mono text-xs uppercase tracking-widest text-primary">{t("trainers.kicker")}</div>
