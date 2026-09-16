@@ -109,6 +109,7 @@ export type Database = {
       }
       registrations: {
         Row: {
+          available_all_days: boolean
           cohort_id: string | null
           created_at: string
           dev_role: string | null
@@ -117,14 +118,17 @@ export type Database = {
           full_name: string
           group_name: string | null
           hackathon_choice: string
+          has_laptop: boolean
           id: string
           languages: string[] | null
           motivation: string | null
           phone: string | null
+          problem_idea: string | null
           profession: string | null
           status: string
         }
         Insert: {
+          available_all_days?: boolean
           cohort_id?: string | null
           created_at?: string
           dev_role?: string | null
@@ -133,14 +137,17 @@ export type Database = {
           full_name: string
           group_name?: string | null
           hackathon_choice?: string
+          has_laptop?: boolean
           id?: string
           languages?: string[] | null
           motivation?: string | null
           phone?: string | null
+          problem_idea?: string | null
           profession?: string | null
           status?: string
         }
         Update: {
+          available_all_days?: boolean
           cohort_id?: string | null
           created_at?: string
           dev_role?: string | null
@@ -149,10 +156,12 @@ export type Database = {
           full_name?: string
           group_name?: string | null
           hackathon_choice?: string
+          has_laptop?: boolean
           id?: string
           languages?: string[] | null
           motivation?: string | null
           phone?: string | null
+          problem_idea?: string | null
           profession?: string | null
           status?: string
         }
