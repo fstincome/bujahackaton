@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Zap, ArrowLeft, Check } from "lucide-react";
+import { Zap, ArrowLeft, Check, CalendarClock } from "lucide-react";
 import { useI18n } from "@/lib/providers";
+import { isRegistrationClosed } from "@/lib/deadline";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
@@ -36,6 +37,11 @@ function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [languages, setLanguages] = useState<string[]>([]);
+  const [closed, setClosed] = useState(false);
+
+  useEffect(() => {
+    setClosed(isRegistrationClosed());
+  }, []);
 
   function toggleLang(l: string) {
     setLanguages((prev) => (prev.includes(l) ? prev.filter((x) => x !== l) : [...prev, l]));
