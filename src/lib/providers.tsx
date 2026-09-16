@@ -319,7 +319,7 @@ const dict: Record<Lang, Record<string, string>> = {
     "out.4": "10+ peer-to-peer transactions during the exercises",
     "out.5": "A concrete contribution to Burundi's Bitcoin ecosystem",
     "cta.title": "Join the cohort",
-    "cta.spots": "30 spots available.",
+    "cta.spots": "Open to everyone · 30 participants will be selected.",
     "cta.received": "application(s) received.",
     "cta.apply": "Submit my application",
     "cta.dashboard": "View dashboard",
