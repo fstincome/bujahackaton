@@ -107,6 +107,65 @@ export type Database = {
         }
         Relationships: []
       }
+      project_submissions: {
+        Row: {
+          cohort_id: string | null
+          contact_email: string
+          created_at: string
+          description: string | null
+          docs_url: string | null
+          github_url: string | null
+          id: string
+          members: string | null
+          preview_image_url: string | null
+          slides_pdf_url: string | null
+          status: string
+          team_name: string
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          cohort_id?: string | null
+          contact_email: string
+          created_at?: string
+          description?: string | null
+          docs_url?: string | null
+          github_url?: string | null
+          id?: string
+          members?: string | null
+          preview_image_url?: string | null
+          slides_pdf_url?: string | null
+          status?: string
+          team_name: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          cohort_id?: string | null
+          contact_email?: string
+          created_at?: string
+          description?: string | null
+          docs_url?: string | null
+          github_url?: string | null
+          id?: string
+          members?: string | null
+          preview_image_url?: string | null
+          slides_pdf_url?: string | null
+          status?: string
+          team_name?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_submissions_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       registrations: {
         Row: {
           available_all_days: boolean
