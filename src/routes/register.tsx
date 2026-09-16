@@ -97,22 +97,14 @@ function RegisterPage() {
           <Field label={t("reg.group")} error={errors.group_name}>
             <input name="group_name" required maxLength={150} className={field} placeholder={t("reg.group.ph")} />
           </Field>
-          <div className="grid gap-5 md:grid-cols-2">
-            <Field label={t("reg.level")}>
-              <select name="experience_level" defaultValue="beginner" className={field} required>
-                <option value="beginner">{t("level.beginner")}</option>
-                <option value="intermediate">{t("level.intermediate")}</option>
-                <option value="advanced">{t("level.advanced")}</option>
-              </select>
-            </Field>
-            <Field label={t("reg.hack")}>
-              <select name="hackathon_choice" defaultValue="both" className={field} required>
-                <option value="both">{t("hack.both")}</option>
-                <option value="hackathon1">{t("hack.1")}</option>
-                <option value="hackathon2">{t("hack.2")}</option>
-              </select>
-            </Field>
-          </div>
+          <Field label={t("reg.level")}>
+            <select name="experience_level" defaultValue="beginner" className={field} required>
+              <option value="beginner">{t("level.beginner")}</option>
+              <option value="intermediate">{t("level.intermediate")}</option>
+              <option value="advanced">{t("level.advanced")}</option>
+            </select>
+          </Field>
+
 
           <Field label={t("reg.role")} error={errors.dev_role}>
             <div className="grid grid-cols-3 gap-2">
