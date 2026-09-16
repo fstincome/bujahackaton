@@ -143,9 +143,32 @@ function RegisterPage() {
             </div>
           </Field>
 
+          <Field label={t("reg.problem")} error={errors.problem_idea}>
+            <textarea name="problem_idea" rows={3} maxLength={1000} className={field} placeholder={t("reg.problem.ph")} />
+          </Field>
+
           <Field label={t("reg.motivation")} error={errors.motivation}>
             <textarea name="motivation" rows={4} maxLength={1000} className={field} placeholder={t("reg.motivation.ph")} />
           </Field>
+
+          <div className="grid gap-3 rounded-lg border border-border bg-background p-4">
+            <label className="flex items-start gap-3 text-sm">
+              <input type="checkbox" name="available_all_days" required className="mt-0.5 h-4 w-4 accent-primary" />
+              <span>
+                <span className="block font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("reg.avail")}</span>
+                {t("reg.avail.help")}
+              </span>
+            </label>
+            {errors.available_all_days && <span className="text-xs text-destructive">{t("reg.avail.help")}</span>}
+            <label className="flex items-start gap-3 text-sm">
+              <input type="checkbox" name="has_laptop" className="mt-0.5 h-4 w-4 accent-primary" />
+              <span>
+                <span className="block font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("reg.laptop")}</span>
+                {t("reg.laptop.help")}
+              </span>
+            </label>
+          </div>
+
 
           <button
             type="submit"
