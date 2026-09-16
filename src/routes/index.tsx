@@ -125,11 +125,10 @@ function Landing() {
             </a>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-3">
             {[
               { v: "30", l: t("stat.participants") },
               { v: String(totalDays), l: t("stat.hackathons") },
-              { v: "5", l: t("stat.workshops") },
               { v: "2", l: t("stat.prize") },
             ].map((s) => (
               <div key={s.l} className="rounded-xl border border-border bg-card/60 p-5 backdrop-blur">
