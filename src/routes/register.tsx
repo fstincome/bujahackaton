@@ -85,6 +85,20 @@ function RegisterPage() {
         <h1 className="mt-2 text-3xl font-bold">{t("reg.title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t("reg.subtitle")}</p>
 
+        {closed ? (
+          <div className="mt-6 rounded-lg border border-destructive/40 bg-destructive/10 p-4">
+            <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
+              <CalendarClock className="h-4 w-4" /> {t("reg.closed.title")}
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">{t("reg.closed.help")}</p>
+          </div>
+        ) : (
+          <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 font-mono text-xs text-primary">
+            <CalendarClock className="h-3.5 w-3.5" /> {t("reg.deadline")}
+          </div>
+        )}
+
+
         <form onSubmit={onSubmit} className="mt-8 grid gap-5">
           <Field label={t("reg.full_name")} error={errors.full_name}>
             <input name="full_name" required maxLength={120} className={field} placeholder="Jean Niyongabo" />
@@ -178,8 +192,9 @@ function RegisterPage() {
 
           <button
             type="submit"
-            disabled={loading}
-            className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 disabled:opacity-60"
+            disabled={loading || closed}
+            title={closed ? t("reg.closed.title") : undefined}
+            className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Zap className="h-4 w-4" />
             {loading ? t("reg.submitting") : t("reg.submit")}
