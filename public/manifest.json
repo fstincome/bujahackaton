@@ -1,6 +1,6 @@
 {
-  "name": "HACKATON GITEGA",
-  "short_name": "HACKATON",
+  "name": "BOOTCAMP GITEGA",
+  "short_name": "BOOTCAMP",
   "description": "Formation pratique et hackathon Bitcoin P2P à Gitega",
   "start_url": "/",
   "display": "standalone",
