@@ -326,7 +326,7 @@ const dict: Record<Lang, Record<string, string>> = {
     "back": "Back",
     "reg.kicker": "// Application",
     "reg.title": "BOOTCAMP GITEGA registration",
-    "reg.subtitle": "30 spots. September 21–25, 2026, 3 to 7 PM, at Université Polytechnique de Gitega.",
+    "reg.subtitle": "Open to everyone: 30 candidates will be selected. September 21–25, 2026, 3 to 7 PM, at Université Polytechnique de Gitega.",
     "reg.cohort": "Edition *",
     "reg.cohort.help": "Gitega (Université Polytechnique de Gitega).",
     "reg.group": "Group you belong to *",
