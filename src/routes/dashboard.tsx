@@ -23,6 +23,7 @@ type Registration = {
   email: string;
   phone: string | null;
   profession: string | null;
+  group_name: string | null;
   experience_level: string;
   motivation: string | null;
   hackathon_choice: string;
