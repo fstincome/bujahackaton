@@ -369,6 +369,7 @@ const dict: Record<Lang, Record<string, string>> = {
     "th.candidate": "Candidate",
     "th.level": "Level",
     "th.hackathon": "Hackathon",
+    "th.group": "Group",
     "th.date": "Date",
     "th.status": "Status",
     "status.pending": "Pending",
