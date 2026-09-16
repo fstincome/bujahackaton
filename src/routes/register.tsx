@@ -19,6 +19,7 @@ const schema = z.object({
   full_name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(255),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
+  group_name: z.string().trim().min(2).max(150),
   profession: z.string().trim().max(120).optional().or(z.literal("")),
   experience_level: z.enum(["beginner", "intermediate", "advanced"]),
   hackathon_choice: z.enum(["hackathon1", "hackathon2", "both"]),
