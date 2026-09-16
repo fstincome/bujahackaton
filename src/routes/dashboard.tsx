@@ -23,6 +23,7 @@ type Registration = {
   email: string;
   phone: string | null;
   profession: string | null;
+  group_name: string | null;
   experience_level: string;
   motivation: string | null;
   hackathon_choice: string;
@@ -184,6 +185,7 @@ function Dashboard() {
               <thead>
                 <tr className="border-b border-border text-left font-mono text-xs uppercase tracking-wider text-muted-foreground">
                   <th className="py-3 pr-4">{t("th.candidate")}</th>
+                  <th className="py-3 pr-4">{t("th.group")}</th>
                   <th className="py-3 pr-4">{t("th.level")}</th>
                   <th className="py-3 pr-4">{t("th.hackathon")}</th>
                   <th className="py-3 pr-4">{t("th.date")}</th>
@@ -198,6 +200,7 @@ function Dashboard() {
                       <div className="text-xs text-muted-foreground">{r.email}</div>
                       {r.profession && <div className="text-xs text-muted-foreground">{r.profession}</div>}
                     </td>
+                    <td className="py-3 pr-4 text-xs">{r.group_name ?? "—"}</td>
                     <td className="py-3 pr-4 text-xs">{levelLabel(r.experience_level)}</td>
                     <td className="py-3 pr-4 text-xs">{hackLabel(r.hackathon_choice)}</td>
                     <td className="py-3 pr-4 font-mono text-xs text-muted-foreground">

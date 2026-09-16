@@ -79,6 +79,15 @@ function Landing() {
 
   const speakerName = (id: string | null) => speakers.find((s) => s.id === id)?.name ?? null;
 
+  const totalDays = selected?.days ?? 2;
+  const dayOffset = (offset: number) => {
+    if (!selected?.start_date) return String(offset + 1).padStart(2, "0");
+    const d = new Date(selected.start_date);
+    d.setDate(d.getDate() + offset);
+    return String(d.getDate()).padStart(2, "0");
+  };
+
+
 
   return (
     <main>
@@ -119,9 +128,9 @@ function Landing() {
           <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
               { v: "30", l: t("stat.participants") },
-              { v: "2", l: t("stat.hackathons") },
+              { v: String(totalDays), l: t("stat.hackathons") },
               { v: "3", l: t("stat.workshops") },
-              { v: "✓", l: t("stat.prize") },
+              { v: "2", l: t("stat.prize") },
             ].map((s) => (
               <div key={s.l} className="rounded-xl border border-border bg-card/60 p-5 backdrop-blur">
                 <div className="text-3xl font-bold text-primary">{s.v}</div>
@@ -165,8 +174,8 @@ function Landing() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {[
-              { d: "05", m: t("sched.month"), tt: t("sched.h1.t"), s: t("sched.h1.s") },
-              { d: "06", m: t("sched.month"), tt: t("sched.h2.t"), s: t("sched.h2.s") },
+              { d: dayOffset(0), m: t("sched.month"), tt: t("sched.h1.t"), s: t("sched.h1.s") },
+              { d: dayOffset(3), m: t("sched.month"), tt: t("sched.h2.t"), s: t("sched.h2.s") },
             ].map((e) => (
               <div key={e.tt} className="flex items-center gap-6 rounded-xl border border-border bg-background p-6">
                 <div className="flex h-24 w-24 flex-col items-center justify-center rounded-lg bg-primary/10 border border-primary/30">
@@ -199,12 +208,12 @@ function Landing() {
           )}
         </div>
         <div className="mt-12 grid gap-8 md:grid-cols-2">
-          {[1, 2].map((day) => {
+          {Array.from({ length: totalDays }, (_, i) => i + 1).map((day) => {
             const daySlots = slots.filter((s) => s.day === day);
             return (
               <div key={day} className="rounded-xl border border-border bg-card p-6">
                 <h3 className="font-mono text-xs uppercase tracking-widest text-primary">
-                  {day === 1 ? t("agenda.day1") : t("agenda.day2")}
+                  {t("agenda.day")} {day}
                 </h3>
                 {daySlots.length === 0 ? (
                   <div className="mt-6 text-sm text-muted-foreground">{t("agenda.empty")}</div>
@@ -238,6 +247,7 @@ function Landing() {
 
 
       {/* Trainers */}
+      {speakers.length > 0 && (
       <section id="trainers" className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
           <div className="font-mono text-xs uppercase tracking-widest text-primary">{t("trainers.kicker")}</div>
@@ -278,6 +288,7 @@ function Landing() {
           </p>
         </div>
       </section>
+      )}
 
       {/* Outcomes + CTA */}
       <section className="mx-auto max-w-6xl px-6 py-20">

@@ -19,6 +19,7 @@ const schema = z.object({
   full_name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(255),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
+  group_name: z.string().trim().min(2).max(150),
   profession: z.string().trim().max(120).optional().or(z.literal("")),
   experience_level: z.enum(["beginner", "intermediate", "advanced"]),
   hackathon_choice: z.enum(["hackathon1", "hackathon2", "both"]),
@@ -84,6 +85,9 @@ function RegisterPage() {
           </div>
           <Field label={t("reg.profession")} error={errors.profession}>
             <input name="profession" className={field} />
+          </Field>
+          <Field label={t("reg.group")} error={errors.group_name}>
+            <input name="group_name" required maxLength={150} className={field} placeholder={t("reg.group.ph")} />
           </Field>
           <div className="grid gap-5 md:grid-cols-2">
             <Field label={t("reg.level")}>
