@@ -200,6 +200,7 @@ function Dashboard() {
                       <div className="text-xs text-muted-foreground">{r.email}</div>
                       {r.profession && <div className="text-xs text-muted-foreground">{r.profession}</div>}
                     </td>
+                    <td className="py-3 pr-4 text-xs">{r.group_name ?? "—"}</td>
                     <td className="py-3 pr-4 text-xs">{levelLabel(r.experience_level)}</td>
                     <td className="py-3 pr-4 text-xs">{hackLabel(r.hackathon_choice)}</td>
                     <td className="py-3 pr-4 font-mono text-xs text-muted-foreground">
