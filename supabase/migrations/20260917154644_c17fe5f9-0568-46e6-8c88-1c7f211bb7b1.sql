@@ -1,0 +1,1 @@
+REVOKE SELECT ON public.registrations FROM anon;
