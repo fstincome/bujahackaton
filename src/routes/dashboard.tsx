@@ -257,6 +257,41 @@ function Dashboard() {
             </table>
           </div>
         )}
+
+        {!loading && searched.length > 0 && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <span className="text-xs text-muted-foreground">
+              {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, searched.length)} / {searched.length}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={safePage === 1}
+                className="rounded-md border border-border px-3 py-1.5 text-xs font-mono text-muted-foreground transition hover:text-foreground disabled:opacity-40"
+              >
+                ‹
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setPage(n)}
+                  className={`rounded-md border px-3 py-1.5 text-xs font-mono transition ${
+                    n === safePage ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safePage === totalPages}
+                className="rounded-md border border-border px-3 py-1.5 text-xs font-mono text-muted-foreground transition hover:text-foreground disabled:opacity-40"
+              >
+                ›
+              </button>
+            </div>
+          </div>
+        )}
       </Card>
 
       <div className="mt-6">
