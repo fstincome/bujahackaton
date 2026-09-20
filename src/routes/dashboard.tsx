@@ -91,7 +91,24 @@ function Dashboard() {
     { name: t("level.advanced"), value: rows.filter((r) => r.experience_level === "advanced").length },
   ]), [rows, t]);
 
-  const filtered = filter === "all" ? rows : rows.filter((r) => r.status === filter);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 10;
+
+  const searched = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const base = filter === "all" ? rows : rows.filter((r) => r.status === filter);
+    if (!q) return base;
+    return base.filter((r) =>
+      [r.full_name, r.email, r.phone, r.profession, r.group_name, r.experience_level, r.dev_role, r.status]
+        .filter(Boolean)
+        .some((v) => String(v).toLowerCase().includes(q))
+    );
+  }, [rows, filter, search]);
+
+  const totalPages = Math.max(1, Math.ceil(searched.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const filtered = searched.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   function levelLabel(l: string) {
     return { beginner: t("level.beginner"), intermediate: t("level.intermediate"), advanced: t("level.advanced") }[l] ?? l;
