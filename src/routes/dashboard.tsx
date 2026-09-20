@@ -91,7 +91,24 @@ function Dashboard() {
     { name: t("level.advanced"), value: rows.filter((r) => r.experience_level === "advanced").length },
   ]), [rows, t]);
 
-  const filtered = filter === "all" ? rows : rows.filter((r) => r.status === filter);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 10;
+
+  const searched = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const base = filter === "all" ? rows : rows.filter((r) => r.status === filter);
+    if (!q) return base;
+    return base.filter((r) =>
+      [r.full_name, r.email, r.phone, r.profession, r.group_name, r.experience_level, r.dev_role, r.status]
+        .filter(Boolean)
+        .some((v) => String(v).toLowerCase().includes(q))
+    );
+  }, [rows, filter, search]);
+
+  const totalPages = Math.max(1, Math.ceil(searched.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const filtered = searched.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   function levelLabel(l: string) {
     return { beginner: t("level.beginner"), intermediate: t("level.intermediate"), advanced: t("level.advanced") }[l] ?? l;
@@ -163,11 +180,18 @@ function Dashboard() {
 
       {/* Filters + table */}
       <Card title={t("table.title")} className="mt-6">
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          placeholder={t("table.search")}
+          className="mb-4 w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+        />
         <div className="mb-4 flex flex-wrap gap-2">
           {(["all", "pending", "accepted", "waitlist", "rejected"] as const).map((s) => (
             <button
               key={s}
-              onClick={() => setFilter(s)}
+              onClick={() => { setFilter(s); setPage(1); }}
               className={`rounded-md border px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition ${
                 filter === s ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"
               }`}
@@ -231,6 +255,41 @@ function Dashboard() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {!loading && searched.length > 0 && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <span className="text-xs text-muted-foreground">
+              {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, searched.length)} / {searched.length}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={safePage === 1}
+                className="rounded-md border border-border px-3 py-1.5 text-xs font-mono text-muted-foreground transition hover:text-foreground disabled:opacity-40"
+              >
+                ‹
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setPage(n)}
+                  className={`rounded-md border px-3 py-1.5 text-xs font-mono transition ${
+                    n === safePage ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safePage === totalPages}
+                className="rounded-md border border-border px-3 py-1.5 text-xs font-mono text-muted-foreground transition hover:text-foreground disabled:opacity-40"
+              >
+                ›
+              </button>
+            </div>
           </div>
         )}
       </Card>
