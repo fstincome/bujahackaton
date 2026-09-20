@@ -180,11 +180,18 @@ function Dashboard() {
 
       {/* Filters + table */}
       <Card title={t("table.title")} className="mt-6">
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          placeholder={t("table.search")}
+          className="mb-4 w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+        />
         <div className="mb-4 flex flex-wrap gap-2">
           {(["all", "pending", "accepted", "waitlist", "rejected"] as const).map((s) => (
             <button
               key={s}
-              onClick={() => setFilter(s)}
+              onClick={() => { setFilter(s); setPage(1); }}
               className={`rounded-md border px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition ${
                 filter === s ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"
               }`}
