@@ -37,6 +37,7 @@ const I18nContext = createContext<I18nCtx>({ lang: "fr", setLang: () => {}, t: (
 const dict: Record<Lang, Record<string, string>> = {
   fr: {
     "nav.program": "Programme",
+    "nav.agenda": "Agenda",
     "nav.schedule": "Calendrier",
     "nav.trainers": "Formateurs",
     "nav.contacts": "Contacts",
@@ -77,6 +78,7 @@ const dict: Record<Lang, Record<string, string>> = {
     "sched.prizes": "🏆 Les deux meilleurs projets sont récompensés",
     "trainers.kicker": "// Formateurs",
     "trainers.title": "L'équipe",
+    "trainers.soon": "Les formateurs seront bientôt annoncés.",
     "trainers.lead": "Lead Trainer · Free Tech Institute",
     "trainers.role": "Trainer · Free Tech Institute",
     "trainers.guest": "Guest speaker remote :",
@@ -251,6 +253,7 @@ const dict: Record<Lang, Record<string, string>> = {
   },
   en: {
     "nav.program": "Program",
+    "nav.agenda": "Agenda",
     "nav.schedule": "Schedule",
     "nav.trainers": "Trainers",
     "nav.contacts": "Contact",
@@ -291,6 +294,7 @@ const dict: Record<Lang, Record<string, string>> = {
     "sched.prizes": "🏆 The top two projects are rewarded",
     "trainers.kicker": "// Trainers",
     "trainers.title": "The team",
+    "trainers.soon": "The trainers will be announced soon.",
     "trainers.lead": "Lead Trainer · Free Tech Institute",
     "trainers.role": "Trainer · Free Tech Institute",
     "trainers.guest": "Remote guest speaker:",
