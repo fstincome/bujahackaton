@@ -79,7 +79,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
   // Inline script avoids theme flash before React hydrates.
   const noFlash = `(function(){try{var t=localStorage.getItem('theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.classList.remove('light','dark');document.documentElement.classList.add(t);}catch(e){document.documentElement.classList.add('dark');}})();`;
   return (
-    <html lang="fr" className="dark">
+    <html lang="fr" className="dark" suppressHydrationWarning>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: noFlash }} />
@@ -140,11 +140,10 @@ function SiteNav() {
           <SettingsToggles />
         </div>
         <div className="hidden items-center gap-8 text-sm md:flex">
-          <Link to="/" hash="program" className="text-muted-foreground hover:text-foreground">{t("nav.program")}</Link>
-          <Link to="/" hash="schedule" className="text-muted-foreground hover:text-foreground">{t("nav.schedule")}</Link>
-          <Link to="/" hash="trainers" className="text-muted-foreground hover:text-foreground">{t("nav.trainers")}</Link>
-          <Link to="/" hash="contact" className="text-muted-foreground hover:text-foreground">{t("nav.contacts")}</Link>
-          
+          <Link to="/program" className="text-muted-foreground hover:text-foreground">{t("nav.program")}</Link>
+          <Link to="/agenda" className="text-muted-foreground hover:text-foreground">{t("nav.agenda")}</Link>
+          <Link to="/trainers" className="text-muted-foreground hover:text-foreground">{t("nav.trainers")}</Link>
+          <Link to="/contact" className="text-muted-foreground hover:text-foreground">{t("nav.contacts")}</Link>
         </div>
         <div className="flex items-center gap-2">
           <Link to="/register" className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
