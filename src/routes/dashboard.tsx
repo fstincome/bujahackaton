@@ -1,9 +1,10 @@
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp, LogOut } from "lucide-react";
+import { ArrowLeft, Users, CheckCircle2, Clock, TrendingUp, LogOut, Download } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, PieChart, Pie, Legend } from "recharts";
 import { useI18n } from "@/lib/providers";
+import { Button } from "@/components/ui/button";
 import { SpeakersAdmin } from "@/components/SpeakersAdmin";
 import { ScheduleAdmin } from "@/components/ScheduleAdmin";
 import { CohortsAdmin } from "@/components/CohortsAdmin";
@@ -28,6 +29,7 @@ type Registration = {
   motivation: string | null;
   problem_idea: string | null;
   dev_role: string | null;
+  languages: string[] | null;
   available_all_days: boolean | null;
   has_laptop: boolean | null;
   status: string;
@@ -118,6 +120,54 @@ function Dashboard() {
     return { backend: t("role.backend"), frontend: t("role.frontend"), fullstack: t("role.fullstack") }[h] ?? h;
   }
 
+  function exportData() {
+    return searched.map((r) => ({
+      [t("th.candidate")]: r.full_name,
+      [t("login.email")]: r.email,
+      [t("reg.phone")]: r.phone ?? "",
+      [t("reg.profession")]: r.profession ?? "",
+      [t("th.group")]: r.group_name ?? "",
+      [t("th.level")]: levelLabel(r.experience_level),
+      [t("th.hackathon")]: hackLabel(r.dev_role),
+      [t("reg.langs")]: r.languages?.join(", ") ?? "",
+      [t("th.avail")]: r.available_all_days ? t("yes") : t("no"),
+      [t("th.laptop")]: r.has_laptop ? t("yes") : t("no"),
+      [t("reg.problem")]: r.problem_idea ?? "",
+      [t("reg.motivation")]: r.motivation ?? "",
+      [t("th.date")]: new Date(r.created_at).toLocaleString(lang === "fr" ? "fr-FR" : "en-US"),
+      [t("th.status")]: t(`status.${r.status}`),
+    }));
+  }
+
+  function exportFilename(extension: "csv" | "xlsx") {
+    return `candidatures-${filter}-${new Date().toISOString().slice(0, 10)}.${extension}`;
+  }
+
+  function downloadCsv() {
+    const data = exportData();
+    if (data.length === 0) return;
+    const headers = Object.keys(data[0]);
+    const escape = (value: unknown) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+    const csv = [headers.map(escape).join(","), ...data.map((row) => headers.map((header) => escape(row[header])).join(","))].join("\r\n");
+    const url = URL.createObjectURL(new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = exportFilename("csv");
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function downloadExcel() {
+    const data = exportData();
+    if (data.length === 0) return;
+    const XLSX = await import("xlsx");
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    worksheet["!cols"] = Object.keys(data[0]).map((header) => ({ wch: Math.min(45, Math.max(header.length + 2, 14)) }));
+    XLSX.utils.book_append_sheet(workbook, worksheet, t("table.export.sheet"));
+    XLSX.writeFile(workbook, exportFilename("xlsx"), { compression: true });
+  }
+
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
       <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
@@ -187,18 +237,29 @@ function Dashboard() {
           placeholder={t("table.search")}
           className="mb-4 w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
         />
-        <div className="mb-4 flex flex-wrap gap-2">
-          {(["all", "pending", "accepted", "waitlist", "rejected"] as const).map((s) => (
-            <button
-              key={s}
-              onClick={() => { setFilter(s); setPage(1); }}
-              className={`rounded-md border px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition ${
-                filter === s ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t(`filter.${s}`)} {s !== "all" && `(${rows.filter((r) => r.status === s).length})`}
-            </button>
-          ))}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-2">
+            {(["all", "pending", "accepted", "waitlist", "rejected"] as const).map((s) => (
+              <Button
+                key={s}
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => { setFilter(s); setPage(1); }}
+                className={`font-mono uppercase ${filter === s ? "border-primary bg-primary/10 text-primary" : "text-muted-foreground"}`}
+              >
+                {t(`filter.${s}`)} {s !== "all" && `(${rows.filter((r) => r.status === s).length})`}
+              </Button>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" size="sm" onClick={downloadCsv} disabled={searched.length === 0}>
+              <Download /> CSV
+            </Button>
+            <Button type="button" variant="outline" size="sm" onClick={downloadExcel} disabled={searched.length === 0}>
+              <Download /> Excel
+            </Button>
+          </div>
         </div>
 
         {loading ? (
