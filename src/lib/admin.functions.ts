@@ -13,6 +13,32 @@ export const getPublicRegistrationCount = createServerFn({ method: "GET" }).hand
   return { count: count ?? 0 };
 });
 
+export type SelectedParticipant = {
+  full_name: string;
+  group_name: string | null;
+};
+
+/** Public: names of accepted (selected) participants for the active cohort. */
+export const getSelectedParticipants = createServerFn({ method: "GET" }).handler(async () => {
+  const { data: cohort } = await supabaseAdmin
+    .from("cohorts")
+    .select("id")
+    .eq("is_active", true)
+    .eq("is_public", true)
+    .maybeSingle();
+
+  let query = supabaseAdmin
+    .from("registrations")
+    .select("full_name,group_name")
+    .eq("status", "accepted")
+    .order("full_name");
+  if (cohort?.id) query = query.eq("cohort_id", cohort.id);
+
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return { participants: (data ?? []) as SelectedParticipant[] };
+});
+
 /** Idempotent: ensures the single allowlisted admin account exists. */
 export const ensureAdminAccount = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({
