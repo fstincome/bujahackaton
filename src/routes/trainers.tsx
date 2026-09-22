@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Sparkles } from "lucide-react";
 import { useI18n } from "@/lib/providers";
 import { useCohort } from "@/lib/useCohort";
 import { PageHeader } from "@/components/PageHeader";
