@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Sparkles } from "lucide-react";
 import { useI18n } from "@/lib/providers";
 import { useCohort } from "@/lib/useCohort";
 import { PageHeader } from "@/components/PageHeader";
@@ -63,12 +62,6 @@ function TrainersPage() {
         <p className="mt-12 text-center text-sm text-muted-foreground">{t("trainers.soon")}</p>
       )}
 
-      <div className="mt-10 rounded-xl border border-primary/30 bg-primary/5 p-6 text-center">
-        <Sparkles className="mx-auto h-6 w-6 text-primary" />
-        <p className="mt-2 text-sm">
-          <strong>{t("trainers.guest")}</strong> {t("trainers.guest.body")}
-        </p>
-      </div>
     </main>
   );
 }
