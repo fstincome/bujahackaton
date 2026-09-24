@@ -44,7 +44,7 @@ function ParticipantsPage() {
         {participants.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("sel.subtitle")}</p>
         ) : (
-          <ParticipantsGrid participants={participants} />
+          <ParticipantsList participants={participants} />
         )}
       </div>
     </main>
