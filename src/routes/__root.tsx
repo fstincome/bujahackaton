@@ -147,6 +147,7 @@ function SiteNav() {
           <Link to="/program" className="text-muted-foreground hover:text-foreground">{t("nav.program")}</Link>
           <Link to="/agenda" className="text-muted-foreground hover:text-foreground">{t("nav.agenda")}</Link>
           <Link to="/trainers" className="text-muted-foreground hover:text-foreground">{t("nav.trainers")}</Link>
+          {selectedParticipants.length > 0 && <Link to="/participants" className="text-muted-foreground hover:text-foreground">{t("nav.participants")}</Link>}
           {publicProjects.length > 0 && <Link to="/projects" className="text-muted-foreground hover:text-foreground">{t("nav.projects")}</Link>}
           <Link to="/contact" className="text-muted-foreground hover:text-foreground">{t("nav.contacts")}</Link>
         </div>
