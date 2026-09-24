@@ -16,6 +16,7 @@ export const getPublicRegistrationCount = createServerFn({ method: "GET" }).hand
 export type SelectedParticipant = {
   full_name: string;
   group_name: string | null;
+  dev_role: string | null;
 };
 
 /** Public: names of accepted (selected) participants for the active cohort. */
