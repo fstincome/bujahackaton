@@ -46,6 +46,8 @@ const L = {
     github: "GitHub — frontend (ou projet complet) *",
     githubBack: "GitHub — backend (si séparé)",
     desc: "Que fait le projet ? *",
+    design: "Design du projet (image mise en avant) *",
+    designFile: "Choisir une image (PNG, JPG, WebP — 5 Mo max)",
     slides: "Présentation *",
     upload: "Téléverser un fichier",
     link: "Lien public (Google Slides…)",
@@ -54,6 +56,7 @@ const L = {
     sending: "Envoi…",
     ok: "Projet envoyé, merci !",
     needSlides: "Ajoutez une présentation (fichier ou lien).",
+    needDesign: "Ajoutez l'image du design du projet.",
   },
   en: {
     kicker: "Team leaders only",
@@ -66,6 +69,8 @@ const L = {
     github: "GitHub — frontend (or full project) *",
     githubBack: "GitHub — backend (if separate)",
     desc: "What does the project do? *",
+    design: "Project design (featured image) *",
+    designFile: "Pick an image (PNG, JPG, WebP — 5 MB max)",
     slides: "Presentation *",
     upload: "Upload a file",
     link: "Public link (Google Slides…)",
@@ -74,6 +79,7 @@ const L = {
     sending: "Sending…",
     ok: "Project submitted, thank you!",
     needSlides: "Add a presentation (file or link).",
+    needDesign: "Add the project design image.",
   },
 };
 
