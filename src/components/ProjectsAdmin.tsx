@@ -10,6 +10,7 @@ type Submission = {
   team_leader?: string | null;
   project_name?: string | null;
   slides_link?: string | null;
+  is_public?: boolean;
   github_backend_url?: string | null;
   members: string | null;
   description: string | null;
@@ -49,6 +50,13 @@ export function ProjectsAdmin() {
   useEffect(() => {
     load();
   }, []);
+
+  async function togglePublic(r: Submission) {
+    const next = !r.is_public;
+    const { error } = await supabase.from("project_submissions").update({ is_public: next } as any).eq("id", r.id);
+    if (!error) setRows((rs) => rs.map((x) => (x.id === r.id ? { ...x, is_public: next } : x)));
+    else alert(error.message);
+  }
 
   async function remove(id: string) {
     if (!confirm(t("proj.admin.delete"))) return;
@@ -96,6 +104,13 @@ export function ProjectsAdmin() {
                 {r.slides_pdf_url && signed[r.slides_pdf_url] && (
                   <LinkPill href={signed[r.slides_pdf_url]} icon={FileText} label={r.slides_pdf_url.split(".").pop()?.toUpperCase() ?? "PDF"} />
                 )}
+              </div>
+              <div className="mt-3 flex items-center gap-2">
+                {r.is_public && <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-mono uppercase text-primary">{t("proj.isPublic")}</span>}
+                <button onClick={() => togglePublic(r)}
+                  className={`rounded-md px-3 py-1.5 text-xs font-semibold ${r.is_public ? "border border-border hover:border-destructive" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}>
+                  {r.is_public ? t("proj.makePrivate") : t("proj.makePublic")}
+                </button>
               </div>
               <div className="mt-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                 {new Date(r.created_at).toLocaleString()}

@@ -1,3 +1,4 @@
+import { ProjectGrid, usePublicProjects } from "@/components/PublicProjects";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { getPublicRegistrationCount, getSelectedParticipants, type SelectedParticipant } from "@/lib/admin.functions";
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/")({
 function Landing() {
   const { t } = useI18n();
   const [count, setCount] = useState<number | null>(null);
+  const publicProjects = usePublicProjects();
   const [participants, setParticipants] = useState<SelectedParticipant[]>([]);
   const { totalDays } = useCohort();
 
@@ -98,6 +100,15 @@ function Landing() {
           ))}
         </div>
       </section>
+
+      {publicProjects.length > 0 && (
+        <section className="mx-auto max-w-6xl px-6 pb-16">
+          <div className="font-mono text-xs uppercase tracking-widest text-primary">{t("pp.kicker")}</div>
+          <h2 className="mt-3 text-2xl font-bold">{t("pp.title")}</h2>
+          <p className="mt-2 mb-6 text-sm text-muted-foreground">{t("pp.subtitle")}</p>
+          <ProjectGrid projects={publicProjects} />
+        </section>
+      )}
 
       {/* Selected participants */}
       {participants.length > 0 && (
