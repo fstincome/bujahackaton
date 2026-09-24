@@ -117,6 +117,7 @@ export type Database = {
           github_backend_url: string | null
           github_url: string | null
           id: string
+          is_public: boolean
           members: string | null
           preview_image_url: string | null
           project_name: string | null
@@ -137,6 +138,7 @@ export type Database = {
           github_backend_url?: string | null
           github_url?: string | null
           id?: string
+          is_public?: boolean
           members?: string | null
           preview_image_url?: string | null
           project_name?: string | null
@@ -157,6 +159,7 @@ export type Database = {
           github_backend_url?: string | null
           github_url?: string | null
           id?: string
+          is_public?: boolean
           members?: string | null
           preview_image_url?: string | null
           project_name?: string | null
