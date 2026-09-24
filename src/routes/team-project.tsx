@@ -46,6 +46,8 @@ const L = {
     github: "GitHub — frontend (ou projet complet) *",
     githubBack: "GitHub — backend (si séparé)",
     desc: "Que fait le projet ? *",
+    design: "Design du projet (image mise en avant) *",
+    designFile: "Choisir une image (PNG, JPG, WebP — 5 Mo max)",
     slides: "Présentation *",
     upload: "Téléverser un fichier",
     link: "Lien public (Google Slides…)",
@@ -54,6 +56,7 @@ const L = {
     sending: "Envoi…",
     ok: "Projet envoyé, merci !",
     needSlides: "Ajoutez une présentation (fichier ou lien).",
+    needDesign: "Ajoutez l'image du design du projet.",
   },
   en: {
     kicker: "Team leaders only",
@@ -66,6 +69,8 @@ const L = {
     github: "GitHub — frontend (or full project) *",
     githubBack: "GitHub — backend (if separate)",
     desc: "What does the project do? *",
+    design: "Project design (featured image) *",
+    designFile: "Pick an image (PNG, JPG, WebP — 5 MB max)",
     slides: "Presentation *",
     upload: "Upload a file",
     link: "Public link (Google Slides…)",
@@ -74,6 +79,7 @@ const L = {
     sending: "Sending…",
     ok: "Project submitted, thank you!",
     needSlides: "Add a presentation (file or link).",
+    needDesign: "Add the project design image.",
   },
 };
 
@@ -85,6 +91,7 @@ function TeamProjectPage() {
   const [team, setTeam] = useState("");
   const [mode, setMode] = useState<"upload" | "link">("upload");
   const [file, setFile] = useState<File | null>(null);
+  const [designFile, setDesignFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -125,8 +132,21 @@ function TeamProjectPage() {
       setErrors({ slides: s.needSlides });
       return;
     }
+    if (!designFile) {
+      setErrors({ design: s.needDesign });
+      return;
+    }
     setLoading(true);
     try {
+      if (designFile.size > 5 * 1024 * 1024) throw new Error("Image: 5 MB max");
+      if (!designFile.type.startsWith("image/")) throw new Error("Image uniquement / image only");
+      const imgExt = (designFile.name.split(".").pop() || "png").toLowerCase();
+      const imgPath = `previews/${crypto.randomUUID()}.${imgExt}`;
+      const { error: imgErr } = await supabase.storage.from("projects").upload(imgPath, designFile, {
+        contentType: designFile.type,
+      });
+      if (imgErr) throw imgErr;
+
       let slides_pdf_url: string | null = null;
       if (mode === "upload" && file) {
         if (file.size > 25 * 1024 * 1024) throw new Error("25 MB max");
@@ -149,6 +169,7 @@ function TeamProjectPage() {
         description: parsed.data.description,
         slides_link: parsed.data.slides_link || null,
         slides_pdf_url,
+        preview_image_url: imgPath,
       } as any);
       if (error) throw error;
       toast.success(s.ok);
@@ -201,6 +222,20 @@ function TeamProjectPage() {
           <Field label={s.desc} error={errors.description}>
             <textarea name="description" required rows={5} maxLength={2000} className={field} />
           </Field>
+
+          <div>
+            <span className="mb-1.5 block text-xs font-mono uppercase tracking-wider text-muted-foreground">{s.design}</span>
+            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-input bg-background px-3 py-2.5 text-sm hover:border-primary">
+              <Upload className="h-4 w-4 text-primary" />
+              <span className="truncate">{designFile ? designFile.name : s.designFile}</span>
+              <input type="file" className="hidden" accept="image/png,image/jpeg,image/webp,image/*"
+                onChange={(e) => setDesignFile(e.target.files?.[0] ?? null)} />
+            </label>
+            {designFile && (
+              <img src={URL.createObjectURL(designFile)} alt="" className="mt-2 h-32 w-full rounded-md border border-border object-cover" />
+            )}
+            {errors.design && <span className="mt-1 block text-xs text-destructive">{errors.design}</span>}
+          </div>
 
           <div>
             <span className="mb-1.5 block text-xs font-mono uppercase tracking-wider text-muted-foreground">{s.slides}</span>
