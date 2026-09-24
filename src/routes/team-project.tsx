@@ -224,6 +224,20 @@ function TeamProjectPage() {
           </Field>
 
           <div>
+            <span className="mb-1.5 block text-xs font-mono uppercase tracking-wider text-muted-foreground">{s.design}</span>
+            <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-input bg-background px-3 py-2.5 text-sm hover:border-primary">
+              <Upload className="h-4 w-4 text-primary" />
+              <span className="truncate">{designFile ? designFile.name : s.designFile}</span>
+              <input type="file" className="hidden" accept="image/png,image/jpeg,image/webp,image/*"
+                onChange={(e) => setDesignFile(e.target.files?.[0] ?? null)} />
+            </label>
+            {designFile && (
+              <img src={URL.createObjectURL(designFile)} alt="" className="mt-2 h-32 w-full rounded-md border border-border object-cover" />
+            )}
+            {errors.design && <span className="mt-1 block text-xs text-destructive">{errors.design}</span>}
+          </div>
+
+          <div>
             <span className="mb-1.5 block text-xs font-mono uppercase tracking-wider text-muted-foreground">{s.slides}</span>
             <div className="mb-3 flex gap-2">
               {(["upload", "link"] as const).map((m) => (
