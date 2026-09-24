@@ -17,7 +17,12 @@ export function ProjectGrid({ projects }: { projects: PublicProject[] }) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((p) => (
-        <article key={p.id} className="flex flex-col rounded-xl border border-border bg-card p-5">
+        <article key={p.id} className={`relative flex flex-col rounded-xl border bg-card p-5 ${p.award_rank ? "border-primary ring-1 ring-primary" : "border-border"}`}>
+          {p.award_rank && (
+            <div className="absolute -top-3 left-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow">
+              🏆 {p.award_rank === 1 ? (en ? "Winner · 1st place" : "Primé · 1er prix") : (en ? "Winner · 2nd place" : "Primé · 2e prix")}
+            </div>
+          )}
           {p.image_url && <img src={p.image_url} alt={p.project_name ?? p.team_name} className="mb-4 h-40 w-full rounded-md border border-border object-cover" />}
           <div className="font-mono text-xs uppercase tracking-widest text-primary">{p.team_name}</div>
           <h3 className="mt-1 text-lg font-bold">{p.project_name ?? p.team_name}</h3>

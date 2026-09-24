@@ -11,6 +11,7 @@ type Submission = {
   project_name?: string | null;
   slides_link?: string | null;
   is_public?: boolean;
+  award_rank?: number | null;
   github_backend_url?: string | null;
   members: string | null;
   description: string | null;
@@ -50,6 +51,13 @@ export function ProjectsAdmin() {
   useEffect(() => {
     load();
   }, []);
+
+  async function setRank(r: Submission, rank: 1 | 2) {
+    const next = r.award_rank === rank ? null : rank;
+    if (next) await supabase.from("project_submissions").update({ award_rank: null } as any).eq("award_rank", next);
+    const { error } = await supabase.from("project_submissions").update({ award_rank: next } as any).eq("id", r.id);
+    if (!error) setRows((rs) => rs.map((x) => (x.id === r.id ? { ...x, award_rank: next } : x.award_rank === next ? { ...x, award_rank: null } : x)));
+  }
 
   async function togglePublic(r: Submission) {
     const next = !r.is_public;
@@ -111,6 +119,12 @@ export function ProjectsAdmin() {
                   className={`rounded-md px-3 py-1.5 text-xs font-semibold ${r.is_public ? "border border-border hover:border-destructive" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}>
                   {r.is_public ? t("proj.makePrivate") : t("proj.makePublic")}
                 </button>
+                {([1, 2] as const).map((k) => (
+                  <button key={k} onClick={() => setRank(r, k)}
+                    className={`rounded-md px-3 py-1.5 text-xs font-semibold ${r.award_rank === k ? "bg-accent text-accent-foreground ring-1 ring-primary" : "border border-border hover:border-primary"}`}>
+                    🏆 {k === 1 ? "1er" : "2e"}
+                  </button>
+                ))}
               </div>
               <div className="mt-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                 {new Date(r.created_at).toLocaleString()}

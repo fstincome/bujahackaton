@@ -1,0 +1,1 @@
+ALTER TABLE public.project_submissions ADD COLUMN IF NOT EXISTS award_rank integer CHECK (award_rank IN (1,2));
