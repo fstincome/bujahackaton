@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/PageHeader";
-import { ParticipantsGrid, useSelectedParticipants } from "@/components/SelectedParticipants";
+import { ParticipantsList, useSelectedParticipants } from "@/components/SelectedParticipants";
 import { useI18n } from "@/lib/providers";
 
 export const Route = createFileRoute("/participants")({
