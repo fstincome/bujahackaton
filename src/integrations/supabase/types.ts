@@ -114,6 +114,7 @@ export type Database = {
           created_at: string
           description: string | null
           docs_url: string | null
+          github_backend_url: string | null
           github_url: string | null
           id: string
           members: string | null
@@ -133,6 +134,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           docs_url?: string | null
+          github_backend_url?: string | null
           github_url?: string | null
           id?: string
           members?: string | null
@@ -152,6 +154,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           docs_url?: string | null
+          github_backend_url?: string | null
           github_url?: string | null
           id?: string
           members?: string | null

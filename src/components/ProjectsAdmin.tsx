@@ -10,6 +10,7 @@ type Submission = {
   team_leader?: string | null;
   project_name?: string | null;
   slides_link?: string | null;
+  github_backend_url?: string | null;
   members: string | null;
   description: string | null;
   website_url: string | null;
@@ -88,7 +89,8 @@ export function ProjectsAdmin() {
               {r.description && <p className="mt-2 text-sm text-muted-foreground">{r.description}</p>}
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
                 {r.website_url && <LinkPill href={r.website_url} icon={Globe} label="Web" />}
-                {r.github_url && <LinkPill href={r.github_url} icon={Github} label="GitHub" />}
+                {r.github_url && <LinkPill href={r.github_url} icon={Github} label={r.github_backend_url ? "GitHub front" : "GitHub"} />}
+                {r.github_backend_url && <LinkPill href={r.github_backend_url} icon={Github} label="GitHub back" />}
                 {r.docs_url && <LinkPill href={r.docs_url} icon={ExternalLink} label="Docs" />}
                 {r.slides_link && <LinkPill href={r.slides_link} icon={FileText} label="Slides" />}
                 {r.slides_pdf_url && signed[r.slides_pdf_url] && (

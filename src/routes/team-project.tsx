@@ -29,6 +29,7 @@ const schema = z.object({
   project_name: z.string().trim().min(2).max(150),
   website_url: url,
   github_url: url,
+  github_backend_url: url.optional().or(z.literal("")),
   description: z.string().trim().min(10).max(2000),
   slides_link: url.optional().or(z.literal("")),
 });
@@ -42,7 +43,8 @@ const L = {
     pick: "— Choisir —",
     project: "Nom du projet *",
     web: "Lien web (Vercel, Netlify…) *",
-    github: "Lien GitHub du projet *",
+    github: "GitHub — frontend (ou projet complet) *",
+    githubBack: "GitHub — backend (si séparé)",
     desc: "Que fait le projet ? *",
     slides: "Présentation *",
     upload: "Téléverser un fichier",
@@ -61,7 +63,8 @@ const L = {
     pick: "— Select —",
     project: "Project name *",
     web: "Web link (Vercel, Netlify…) *",
-    github: "Project GitHub link *",
+    github: "GitHub — frontend (or full project) *",
+    githubBack: "GitHub — backend (if separate)",
     desc: "What does the project do? *",
     slides: "Presentation *",
     upload: "Upload a file",
@@ -108,6 +111,7 @@ function TeamProjectPage() {
       project_name: String(fd.get("project_name") ?? ""),
       website_url: String(fd.get("website_url") ?? ""),
       github_url: String(fd.get("github_url") ?? ""),
+      github_backend_url: String(fd.get("github_backend_url") ?? ""),
       description: String(fd.get("description") ?? ""),
       slides_link: mode === "link" ? String(fd.get("slides_link") ?? "") : "",
     });
@@ -141,6 +145,7 @@ function TeamProjectPage() {
         project_name: parsed.data.project_name,
         website_url: parsed.data.website_url,
         github_url: parsed.data.github_url,
+        github_backend_url: parsed.data.github_backend_url || null,
         description: parsed.data.description,
         slides_link: parsed.data.slides_link || null,
         slides_pdf_url,
@@ -190,6 +195,9 @@ function TeamProjectPage() {
               <input name="github_url" type="url" required className={field} placeholder="https://github.com/..." />
             </Field>
           </div>
+          <Field label={s.githubBack} error={errors.github_backend_url}>
+            <input name="github_backend_url" type="url" className={field} placeholder="https://github.com/.../backend" />
+          </Field>
           <Field label={s.desc} error={errors.description}>
             <textarea name="description" required rows={5} maxLength={2000} className={field} />
           </Field>
