@@ -30,7 +30,7 @@ export const getSelectedParticipants = createServerFn({ method: "GET" }).handler
 
   let query = supabaseAdmin
     .from("registrations")
-    .select("full_name,group_name")
+    .select("full_name,group_name,dev_role")
     .eq("status", "accepted")
     .order("full_name");
   if (cohort?.id) query = query.eq("cohort_id", cohort.id);
