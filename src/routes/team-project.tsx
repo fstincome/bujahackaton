@@ -132,8 +132,21 @@ function TeamProjectPage() {
       setErrors({ slides: s.needSlides });
       return;
     }
+    if (!designFile) {
+      setErrors({ design: s.needDesign });
+      return;
+    }
     setLoading(true);
     try {
+      if (designFile.size > 5 * 1024 * 1024) throw new Error("Image: 5 MB max");
+      if (!designFile.type.startsWith("image/")) throw new Error("Image uniquement / image only");
+      const imgExt = (designFile.name.split(".").pop() || "png").toLowerCase();
+      const imgPath = `previews/${crypto.randomUUID()}.${imgExt}`;
+      const { error: imgErr } = await supabase.storage.from("projects").upload(imgPath, designFile, {
+        contentType: designFile.type,
+      });
+      if (imgErr) throw imgErr;
+
       let slides_pdf_url: string | null = null;
       if (mode === "upload" && file) {
         if (file.size > 25 * 1024 * 1024) throw new Error("25 MB max");
@@ -156,6 +169,7 @@ function TeamProjectPage() {
         description: parsed.data.description,
         slides_link: parsed.data.slides_link || null,
         slides_pdf_url,
+        preview_image_url: imgPath,
       } as any);
       if (error) throw error;
       toast.success(s.ok);
