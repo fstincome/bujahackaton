@@ -28,7 +28,7 @@ export function ProjectGrid({ projects }: { projects: PublicProject[] }) {
           )}
           {p.description && <p className="mt-3 flex-1 whitespace-pre-line text-sm text-muted-foreground">{p.description}</p>}
           <div className="mt-4 flex flex-wrap gap-2 text-xs">
-            {p.website_url && <Pill href={p.website_url} icon={Globe} label="Web" />}
+            {p.website_url && <Pill href={p.website_url} icon={Globe} label={en ? "View project" : "Voir le projet"} />}
             {p.docs_url && <Pill href={p.docs_url} icon={ExternalLink} label="Docs" />}
           </div>
         </article>
