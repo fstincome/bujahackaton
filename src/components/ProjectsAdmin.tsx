@@ -75,8 +75,10 @@ export function ProjectsAdmin() {
               )}
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <div className="font-semibold">{r.team_name}</div>
-                  <div className="text-xs text-muted-foreground">{r.contact_email}</div>
+                  {r.project_name && <div className="font-semibold">{r.project_name}</div>}
+                  <div className={r.project_name ? "text-sm" : "font-semibold"}>{r.team_name}</div>
+                  {r.team_leader && <div className="text-xs text-muted-foreground">Chef : {r.team_leader}</div>}
+                  {r.contact_email && <div className="text-xs text-muted-foreground">{r.contact_email}</div>}
                   {r.members && <div className="mt-1 text-xs text-muted-foreground">{r.members}</div>}
                 </div>
                 <button onClick={() => remove(r.id)} className="text-muted-foreground hover:text-destructive">
@@ -88,8 +90,9 @@ export function ProjectsAdmin() {
                 {r.website_url && <LinkPill href={r.website_url} icon={Globe} label="Web" />}
                 {r.github_url && <LinkPill href={r.github_url} icon={Github} label="GitHub" />}
                 {r.docs_url && <LinkPill href={r.docs_url} icon={ExternalLink} label="Docs" />}
+                {r.slides_link && <LinkPill href={r.slides_link} icon={FileText} label="Slides" />}
                 {r.slides_pdf_url && signed[r.slides_pdf_url] && (
-                  <LinkPill href={signed[r.slides_pdf_url]} icon={FileText} label="PDF" />
+                  <LinkPill href={signed[r.slides_pdf_url]} icon={FileText} label={r.slides_pdf_url.split(".").pop()?.toUpperCase() ?? "PDF"} />
                 )}
               </div>
               <div className="mt-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
