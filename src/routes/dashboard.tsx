@@ -189,8 +189,27 @@ function Dashboard() {
         </div>
       </div>
 
+      <div className="mt-8 flex flex-col gap-6 md:flex-row">
+        <aside className="md:w-56 md:shrink-0">
+          <nav className="flex gap-1 overflow-x-auto md:sticky md:top-24 md:flex-col">
+            {NAV.map(([key, Icon, fr, en]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setSection(key)}
+                className={`inline-flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium transition ${
+                  section === key ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                <Icon className="h-4 w-4" /> {lang === "fr" ? fr : en}
+              </button>
+            ))}
+          </nav>
+        </aside>
+        <div className="min-w-0 flex-1">
+      {section === "overview" && (<>
       {/* KPIs */}
-      <div className="mt-8 grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-4">
         <Kpi icon={Users} label={t("kpi.total")} value={stats.total} accent="oklch(0.75 0.17 55)" />
         <Kpi icon={CheckCircle2} label={t("kpi.accepted")} value={stats.accepted} accent="oklch(0.65 0.15 145)" />
         <Kpi icon={Clock} label={t("kpi.pending")} value={stats.pending} accent="oklch(0.7 0.12 200)" />
@@ -354,21 +373,14 @@ function Dashboard() {
           </div>
         )}
       </Card>
+      </>)}
 
-      <div className="mt-6">
-        <CohortsAdmin />
-      </div>
-
-      <div className="mt-6">
-        <ScheduleAdmin />
-      </div>
-
-      <div className="mt-6">
-        <SpeakersAdmin />
-      </div>
-
-      <div className="mt-6">
-        <ContactMessagesAdmin />
+      {section === "cohorts" && <CohortsAdmin />}
+      {section === "schedule" && <ScheduleAdmin />}
+      {section === "speakers" && <SpeakersAdmin />}
+      {section === "projects" && <ProjectsAdmin />}
+      {section === "messages" && <ContactMessagesAdmin />}
+        </div>
       </div>
     </main>
   );
