@@ -9,6 +9,17 @@ import { SpeakersAdmin } from "@/components/SpeakersAdmin";
 import { ScheduleAdmin } from "@/components/ScheduleAdmin";
 import { CohortsAdmin } from "@/components/CohortsAdmin";
 import { ContactMessagesAdmin } from "@/components/ContactMessagesAdmin";
+import { ProjectsAdmin } from "@/components/ProjectsAdmin";
+import { LayoutDashboard, Layers, CalendarDays, Mic, FolderGit2, Mail } from "lucide-react";
+
+const NAV = [
+  ["overview", LayoutDashboard, "Candidatures", "Applications"],
+  ["cohorts", Layers, "Cohortes", "Cohorts"],
+  ["schedule", CalendarDays, "Agenda", "Schedule"],
+  ["speakers", Mic, "Formateurs", "Trainers"],
+  ["projects", FolderGit2, "Projets soumis", "Submitted projects"],
+  ["messages", Mail, "Messages", "Messages"],
+] as const;
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
@@ -94,6 +105,7 @@ function Dashboard() {
   ]), [rows, t]);
 
   const [search, setSearch] = useState("");
+  const [section, setSection] = useState<(typeof NAV)[number][0]>("overview");
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
 
