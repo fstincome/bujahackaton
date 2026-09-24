@@ -109,6 +109,7 @@ export type Database = {
       }
       project_submissions: {
         Row: {
+          award_rank: number | null
           cohort_id: string | null
           contact_email: string | null
           created_at: string
@@ -130,6 +131,7 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+          award_rank?: number | null
           cohort_id?: string | null
           contact_email?: string | null
           created_at?: string
@@ -151,6 +153,7 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+          award_rank?: number | null
           cohort_id?: string | null
           contact_email?: string | null
           created_at?: string
