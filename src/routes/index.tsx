@@ -17,6 +17,11 @@ function Landing() {
   const [count, setCount] = useState<number | null>(null);
   const publicProjects = usePublicProjects();
   const participants = useSelectedParticipants();
+  const { totalDays } = useCohort();
+
+  useEffect(() => {
+    getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
+  }, []);
 
   const sections = [
     { to: "/program", icon: ListChecks, label: t("nav.program"), desc: t("program.subtitle") },
