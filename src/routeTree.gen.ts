@@ -14,6 +14,7 @@ import { Route as TeamProjectRouteImport } from './routes/team-project'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ProgramRouteImport } from './routes/program'
+import { Route as ParticipantsRouteImport } from './routes/participants'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -43,6 +44,11 @@ const ProjectsRoute = ProjectsRouteImport.update({
 const ProgramRoute = ProgramRouteImport.update({
   id: '/program',
   path: '/program',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParticipantsRoute = ParticipantsRouteImport.update({
+  id: '/participants',
+  path: '/participants',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/participants': typeof ParticipantsRoute
   '/program': typeof ProgramRoute
   '/projects': typeof ProjectsRoute
   '/register': typeof RegisterRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/participants': typeof ParticipantsRoute
   '/program': typeof ProgramRoute
   '/projects': typeof ProjectsRoute
   '/register': typeof RegisterRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/participants': typeof ParticipantsRoute
   '/program': typeof ProgramRoute
   '/projects': typeof ProjectsRoute
   '/register': typeof RegisterRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/login'
+    | '/participants'
     | '/program'
     | '/projects'
     | '/register'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/login'
+    | '/participants'
     | '/program'
     | '/projects'
     | '/register'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/login'
+    | '/participants'
     | '/program'
     | '/projects'
     | '/register'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
+  ParticipantsRoute: typeof ParticipantsRoute
   ProgramRoute: typeof ProgramRoute
   ProjectsRoute: typeof ProjectsRoute
   RegisterRoute: typeof RegisterRoute
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/program'
       fullPath: '/program'
       preLoaderRoute: typeof ProgramRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/participants': {
+      id: '/participants'
+      path: '/participants'
+      fullPath: '/participants'
+      preLoaderRoute: typeof ParticipantsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
+  ParticipantsRoute: ParticipantsRoute,
   ProgramRoute: ProgramRoute,
   ProjectsRoute: ProjectsRoute,
   RegisterRoute: RegisterRoute,

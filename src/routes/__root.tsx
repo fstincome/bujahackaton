@@ -1,4 +1,5 @@
 import { usePublicProjects } from "@/components/PublicProjects";
+import { useSelectedParticipants } from "@/components/SelectedParticipants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -131,6 +132,7 @@ function ThemedToaster() {
 function SiteNav() {
   const { t } = useI18n();
   const publicProjects = usePublicProjects();
+  const selectedParticipants = useSelectedParticipants();
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -145,6 +147,7 @@ function SiteNav() {
           <Link to="/program" className="text-muted-foreground hover:text-foreground">{t("nav.program")}</Link>
           <Link to="/agenda" className="text-muted-foreground hover:text-foreground">{t("nav.agenda")}</Link>
           <Link to="/trainers" className="text-muted-foreground hover:text-foreground">{t("nav.trainers")}</Link>
+          {selectedParticipants.length > 0 && <Link to="/participants" className="text-muted-foreground hover:text-foreground">{t("nav.participants")}</Link>}
           {publicProjects.length > 0 && <Link to="/projects" className="text-muted-foreground hover:text-foreground">{t("nav.projects")}</Link>}
           <Link to="/contact" className="text-muted-foreground hover:text-foreground">{t("nav.contacts")}</Link>
         </div>
