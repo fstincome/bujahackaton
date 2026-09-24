@@ -6,7 +6,10 @@ import { useI18n } from "@/lib/providers";
 type Submission = {
   id: string;
   team_name: string;
-  contact_email: string;
+  contact_email: string | null;
+  team_leader?: string | null;
+  project_name?: string | null;
+  slides_link?: string | null;
   members: string | null;
   description: string | null;
   website_url: string | null;
