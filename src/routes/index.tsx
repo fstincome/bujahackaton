@@ -16,18 +16,7 @@ function Landing() {
   const { t } = useI18n();
   const [count, setCount] = useState<number | null>(null);
   const publicProjects = usePublicProjects();
-  const [participants, setParticipants] = useState<SelectedParticipant[]>([]);
-  const { totalDays } = useCohort();
-
-  useEffect(() => {
-    getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
-  }, []);
-
-  useEffect(() => {
-    getSelectedParticipants()
-      .then((r) => setParticipants(r.participants ?? []))
-      .catch(() => setParticipants([]));
-  }, []);
+  const participants = useSelectedParticipants();
 
   const sections = [
     { to: "/program", icon: ListChecks, label: t("nav.program"), desc: t("program.subtitle") },
