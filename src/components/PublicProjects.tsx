@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Globe, Github, FileText, ExternalLink, User } from "lucide-react";
+import { Globe, ExternalLink, User } from "lucide-react";
 import { getPublicProjects, type PublicProject } from "@/lib/admin.functions";
 import { useI18n } from "@/lib/providers";
 
