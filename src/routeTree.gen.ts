@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrainersRouteImport } from './routes/trainers'
+import { Route as TeamProjectRouteImport } from './routes/team-project'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ProgramRouteImport } from './routes/program'
@@ -22,6 +23,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const TrainersRoute = TrainersRouteImport.update({
   id: '/trainers',
   path: '/trainers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamProjectRoute = TeamProjectRouteImport.update({
+  id: '/team-project',
+  path: '/team-project',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/program': typeof ProgramRoute
   '/projects': typeof ProjectsRoute
   '/register': typeof RegisterRoute
+  '/team-project': typeof TeamProjectRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/program': typeof ProgramRoute
   '/projects': typeof ProjectsRoute
   '/register': typeof RegisterRoute
+  '/team-project': typeof TeamProjectRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/program': typeof ProgramRoute
   '/projects': typeof ProjectsRoute
   '/register': typeof RegisterRoute
+  '/team-project': typeof TeamProjectRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/program'
     | '/projects'
     | '/register'
+    | '/team-project'
     | '/trainers'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/program'
     | '/projects'
     | '/register'
+    | '/team-project'
     | '/trainers'
   id:
     | '__root__'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/program'
     | '/projects'
     | '/register'
+    | '/team-project'
     | '/trainers'
   fileRoutesById: FileRoutesById
 }
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   ProgramRoute: typeof ProgramRoute
   ProjectsRoute: typeof ProjectsRoute
   RegisterRoute: typeof RegisterRoute
+  TeamProjectRoute: typeof TeamProjectRoute
   TrainersRoute: typeof TrainersRoute
 }
 
@@ -154,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/trainers'
       fullPath: '/trainers'
       preLoaderRoute: typeof TrainersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team-project': {
+      id: '/team-project'
+      path: '/team-project'
+      fullPath: '/team-project'
+      preLoaderRoute: typeof TeamProjectRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgramRoute: ProgramRoute,
   ProjectsRoute: ProjectsRoute,
   RegisterRoute: RegisterRoute,
+  TeamProjectRoute: TeamProjectRoute,
   TrainersRoute: TrainersRoute,
 }
 export const routeTree = rootRouteImport

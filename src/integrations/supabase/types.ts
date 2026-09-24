@@ -110,7 +110,7 @@ export type Database = {
       project_submissions: {
         Row: {
           cohort_id: string | null
-          contact_email: string
+          contact_email: string | null
           created_at: string
           description: string | null
           docs_url: string | null
@@ -118,15 +118,18 @@ export type Database = {
           id: string
           members: string | null
           preview_image_url: string | null
+          project_name: string | null
+          slides_link: string | null
           slides_pdf_url: string | null
           status: string
+          team_leader: string | null
           team_name: string
           updated_at: string
           website_url: string | null
         }
         Insert: {
           cohort_id?: string | null
-          contact_email: string
+          contact_email?: string | null
           created_at?: string
           description?: string | null
           docs_url?: string | null
@@ -134,15 +137,18 @@ export type Database = {
           id?: string
           members?: string | null
           preview_image_url?: string | null
+          project_name?: string | null
+          slides_link?: string | null
           slides_pdf_url?: string | null
           status?: string
+          team_leader?: string | null
           team_name: string
           updated_at?: string
           website_url?: string | null
         }
         Update: {
           cohort_id?: string | null
-          contact_email?: string
+          contact_email?: string | null
           created_at?: string
           description?: string | null
           docs_url?: string | null
@@ -150,8 +156,11 @@ export type Database = {
           id?: string
           members?: string | null
           preview_image_url?: string | null
+          project_name?: string | null
+          slides_link?: string | null
           slides_pdf_url?: string | null
           status?: string
+          team_leader?: string | null
           team_name?: string
           updated_at?: string
           website_url?: string | null
