@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Globe, Github, FileText, ExternalLink, User } from "lucide-react";
+import { Globe, ExternalLink, User } from "lucide-react";
 import { getPublicProjects, type PublicProject } from "@/lib/admin.functions";
 import { useI18n } from "@/lib/providers";
 
@@ -29,11 +29,7 @@ export function ProjectGrid({ projects }: { projects: PublicProject[] }) {
           {p.description && <p className="mt-3 flex-1 whitespace-pre-line text-sm text-muted-foreground">{p.description}</p>}
           <div className="mt-4 flex flex-wrap gap-2 text-xs">
             {p.website_url && <Pill href={p.website_url} icon={Globe} label="Web" />}
-            {p.github_url && <Pill href={p.github_url} icon={Github} label={p.github_backend_url ? "GitHub front" : "GitHub"} />}
-            {p.github_backend_url && <Pill href={p.github_backend_url} icon={Github} label="GitHub back" />}
             {p.docs_url && <Pill href={p.docs_url} icon={ExternalLink} label="Docs" />}
-            {p.slides_link && <Pill href={p.slides_link} icon={FileText} label="Slides" />}
-            {p.slides_url && <Pill href={p.slides_url} icon={FileText} label={p.slides_ext ?? "PDF"} />}
           </div>
         </article>
       ))}

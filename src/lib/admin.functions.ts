@@ -71,25 +71,20 @@ export type PublicProject = {
   team_leader: string | null;
   description: string | null;
   website_url: string | null;
-  github_url: string | null;
-  github_backend_url: string | null;
   docs_url: string | null;
-  slides_link: string | null;
-  slides_url: string | null;
-  slides_ext: string | null;
   image_url: string | null;
 };
 
-/** Public: projects the admin has marked as public, with signed file URLs. */
+/** Public: projects the admin has marked as public. GitHub links and slide decks stay private (admin only). */
 export const getPublicProjects = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await supabaseAdmin
     .from("project_submissions")
-    .select("id,team_name,project_name,team_leader,description,website_url,github_url,github_backend_url,docs_url,slides_link,slides_pdf_url,preview_image_url")
+    .select("id,team_name,project_name,team_leader,description,website_url,docs_url,preview_image_url")
     .eq("is_public", true)
     .order("created_at", { ascending: true });
   if (error) throw new Error(error.message);
   const rows = (data ?? []) as any[];
-  const paths = rows.flatMap((r) => [r.slides_pdf_url, r.preview_image_url].filter(Boolean));
+  const paths = rows.map((r) => r.preview_image_url).filter(Boolean);
   const map: Record<string, string> = {};
   if (paths.length) {
     const { data: urls } = await supabaseAdmin.storage.from("projects").createSignedUrls(paths, 60 * 60 * 6);
@@ -97,10 +92,7 @@ export const getPublicProjects = createServerFn({ method: "GET" }).handler(async
   }
   const projects: PublicProject[] = rows.map((r) => ({
     id: r.id, team_name: r.team_name, project_name: r.project_name, team_leader: r.team_leader,
-    description: r.description, website_url: r.website_url, github_url: r.github_url,
-    github_backend_url: r.github_backend_url, docs_url: r.docs_url, slides_link: r.slides_link,
-    slides_url: r.slides_pdf_url ? map[r.slides_pdf_url] ?? null : null,
-    slides_ext: r.slides_pdf_url ? String(r.slides_pdf_url).split(".").pop()!.toUpperCase() : null,
+    description: r.description, website_url: r.website_url, docs_url: r.docs_url,
     image_url: r.preview_image_url ? map[r.preview_image_url] ?? null : null,
   }));
   return { projects };
