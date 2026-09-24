@@ -123,8 +123,10 @@ function Landing() {
                   <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <div>
                     <div className="text-sm font-semibold">{p.full_name}</div>
-                    {p.group_name && (
-                      <div className="font-mono text-xs text-muted-foreground">{p.group_name}</div>
+                    {p.dev_role && (
+                      <div className="font-mono text-xs text-muted-foreground">
+                        {p.dev_role === "fullstack" ? "Full stack" : p.dev_role.charAt(0).toUpperCase() + p.dev_role.slice(1)}
+                      </div>
                     )}
                   </div>
                 </div>
