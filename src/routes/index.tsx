@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { getPublicRegistrationCount } from "@/lib/admin.functions";
+import { getPublicRegistrationCount, getSelectedParticipants, type SelectedParticipant } from "@/lib/admin.functions";
 import { useI18n } from "@/lib/providers";
 import { useCohort } from "@/lib/useCohort";
 import heroBg from "@/assets/hero-bg.jpg";
-import { Zap, Users, CalendarDays, ListChecks, GraduationCap, Mail } from "lucide-react";
+import { Zap, Users, CalendarDays, ListChecks, GraduationCap, Mail, BadgeCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -13,10 +13,17 @@ export const Route = createFileRoute("/")({
 function Landing() {
   const { t } = useI18n();
   const [count, setCount] = useState<number | null>(null);
+  const [participants, setParticipants] = useState<SelectedParticipant[]>([]);
   const { totalDays } = useCohort();
 
   useEffect(() => {
     getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
+  }, []);
+
+  useEffect(() => {
+    getSelectedParticipants()
+      .then((r) => setParticipants(r.participants ?? []))
+      .catch(() => setParticipants([]));
   }, []);
 
   const sections = [
@@ -91,6 +98,30 @@ function Landing() {
           ))}
         </div>
       </section>
+
+      {/* Selected participants */}
+      {participants.length > 0 && (
+        <section className="mx-auto max-w-6xl px-6 pb-16">
+          <div className="rounded-xl border border-border bg-card p-8">
+            <div className="font-mono text-xs uppercase tracking-widest text-primary">{t("sel.kicker")}</div>
+            <h2 className="mt-3 text-2xl font-bold">{t("sel.title")}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{t("sel.subtitle")}</p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {participants.map((p) => (
+                <div key={p.full_name} className="flex items-start gap-3 rounded-lg border border-border bg-background/40 px-4 py-3">
+                  <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  <div>
+                    <div className="text-sm font-semibold">{p.full_name}</div>
+                    {p.group_name && (
+                      <div className="font-mono text-xs text-muted-foreground">{p.group_name}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Outcomes + CTA */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
