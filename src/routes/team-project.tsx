@@ -91,6 +91,7 @@ function TeamProjectPage() {
   const [team, setTeam] = useState("");
   const [mode, setMode] = useState<"upload" | "link">("upload");
   const [file, setFile] = useState<File | null>(null);
+  const [designFile, setDesignFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
