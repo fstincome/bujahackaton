@@ -4,7 +4,7 @@ import { getPublicRegistrationCount, getSelectedParticipants, type SelectedParti
 import { useI18n } from "@/lib/providers";
 import { useCohort } from "@/lib/useCohort";
 import heroBg from "@/assets/hero-bg.jpg";
-import { Zap, Users, CalendarDays, ListChecks, GraduationCap, Mail } from "lucide-react";
+import { Zap, Users, CalendarDays, ListChecks, GraduationCap, Mail, BadgeCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -13,10 +13,17 @@ export const Route = createFileRoute("/")({
 function Landing() {
   const { t } = useI18n();
   const [count, setCount] = useState<number | null>(null);
+  const [participants, setParticipants] = useState<SelectedParticipant[]>([]);
   const { totalDays } = useCohort();
 
   useEffect(() => {
     getPublicRegistrationCount().then((r) => setCount(r.count)).catch(() => setCount(0));
+  }, []);
+
+  useEffect(() => {
+    getSelectedParticipants()
+      .then((r) => setParticipants(r.participants ?? []))
+      .catch(() => setParticipants([]));
   }, []);
 
   const sections = [
