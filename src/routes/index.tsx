@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { getPublicRegistrationCount } from "@/lib/admin.functions";
+import { getPublicRegistrationCount, getSelectedParticipants, type SelectedParticipant } from "@/lib/admin.functions";
 import { useI18n } from "@/lib/providers";
 import { useCohort } from "@/lib/useCohort";
 import heroBg from "@/assets/hero-bg.jpg";
