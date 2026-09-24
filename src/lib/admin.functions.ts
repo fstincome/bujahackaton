@@ -74,17 +74,18 @@ export type PublicProject = {
   website_url: string | null;
   docs_url: string | null;
   image_url: string | null;
+  award_rank: number | null;
 };
 
 /** Public: projects the admin has marked as public. GitHub links and slide decks stay private (admin only). */
 export const getPublicProjects = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await supabaseAdmin
     .from("project_submissions")
-    .select("id,team_name,project_name,team_leader,description,website_url,docs_url,preview_image_url")
+    .select("id,team_name,project_name,team_leader,description,website_url,docs_url,preview_image_url,award_rank")
     .eq("is_public", true)
     .order("created_at", { ascending: true });
   if (error) throw new Error(error.message);
-  const rows = (data ?? []) as any[];
+  const rows = ((data ?? []) as any[]).sort((a, b) => (a.award_rank ?? 9) - (b.award_rank ?? 9));
   const paths = rows.map((r) => r.preview_image_url).filter(Boolean);
   const map: Record<string, string> = {};
   if (paths.length) {
@@ -95,6 +96,7 @@ export const getPublicProjects = createServerFn({ method: "GET" }).handler(async
     id: r.id, team_name: r.team_name, project_name: r.project_name, team_leader: r.team_leader,
     description: r.description, website_url: r.website_url, docs_url: r.docs_url,
     image_url: r.preview_image_url ? map[r.preview_image_url] ?? null : null,
+    award_rank: r.award_rank ?? null,
   }));
   return { projects };
 });
