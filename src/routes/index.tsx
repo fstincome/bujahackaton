@@ -1,11 +1,12 @@
 import { ProjectGrid, usePublicProjects } from "@/components/PublicProjects";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { getPublicRegistrationCount, getSelectedParticipants, type SelectedParticipant } from "@/lib/admin.functions";
+import { getPublicRegistrationCount } from "@/lib/admin.functions";
+import { ParticipantsGrid, useSelectedParticipants } from "@/components/SelectedParticipants";
 import { useI18n } from "@/lib/providers";
 import { useCohort } from "@/lib/useCohort";
 import heroBg from "@/assets/hero-bg.jpg";
-import { Zap, Users, CalendarDays, ListChecks, GraduationCap, Mail, BadgeCheck } from "lucide-react";
+import { Zap, Users, CalendarDays, ListChecks, GraduationCap, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Landing,
